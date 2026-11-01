@@ -57,7 +57,7 @@
             padding: 30px 20px;
             display: flex;
             flex-direction: column;
-            z-index: 100;
+            z-index: 2500;
             box-shadow: 4px 0 20px rgba(0,0,0,0.02);
             overflow-y: auto;
         }
@@ -322,53 +322,124 @@
             transform: translateY(-2px);
         }
 
-        @media (max-width: 850px) {
-            .sidebar {
-                display: none; /* Controlado por el JS de tu menú hamburguesa */
-            }
+         
+/* DISEÑO RESPONSIVE */
 
-            .contenido {
-                width: 100%;
-                margin-left: 0;
-                padding: 85px 20px 30px;
-            }
-        }
+@media (max-width: 850px) {
 
-        @media (max-width: 600px) {
-            .perfil-formulario .formulario {
-                grid-template-columns: 1fr;
-            }
+    .menu-toggle {
+        display: block;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 3000;
+    }
 
-            .campo-completo {
-                grid-column: auto;
-            }
+    .sidebar {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: -290px;
+        width: 270px;
+        height: 100vh;
+        padding: 30px 20px;
+        overflow-y: auto;
+        z-index: 2500;
+        transition: left 0.3s ease;
+    }
 
-            .acciones {
-                flex-direction: column;
-            }
+    .sidebar.activo {
+        left: 0;
+    }
 
-            .btn-guardar,
-            .btn-volver {
-                width: 100%;
-                text-align: center;
-            }
+    .overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+    }
 
-            .perfil-banner,
-            .perfil-formulario {
-                padding: 24px;
-            }
-        }
+    .overlay.activo {
+        display: block;
+    }
+
+    .contenido {
+        width: 100%;
+        margin-left: 0;
+        padding: 85px 20px 30px;
+    }
+
+    .encabezado {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .perfil-formulario .formulario {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .campo-completo {
+        grid-column: auto;
+    }
+
+    .acciones {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .btn-guardar,
+    .btn-volver {
+        width: 100%;
+        text-align: center;
+    }
+
+    .perfil-banner,
+    .perfil-formulario {
+        padding: 22px;
+    }
+
+    .encabezado {
+        padding: 22px 18px;
+    }
+
+    .encabezado-titulo-box {
+        gap: 10px;
+    }
+
+    .encabezado-logo {
+        width: 42px;
+        height: 42px;
+    }
+
+    .encabezado h1 {
+        font-size: 27px;
+    }
+
+    .perfil-banner h2 {
+        font-size: 23px;
+    }
+
+    .perfil-banner p,
+    .subtexto {
+        font-size: 14px;
+    }
+}
+
     </style>
 </head>
 
 <body>
 
     <button class="menu-toggle"
-            onclick="toggleMenu()"
-            aria-label="Abrir menú"
-            aria-controls="sidebar">
-        ☰
-    </button>
+        type="button"
+        onclick="toggleMenu()"
+        aria-label="Abrir menú"
+        aria-controls="sidebar">
+    ☰
+</button>
 
     <div class="overlay" onclick="cerrarMenu()"></div>
 

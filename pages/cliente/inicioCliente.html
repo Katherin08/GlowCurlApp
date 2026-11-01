@@ -56,7 +56,7 @@
             padding: 30px 20px;
             display: flex;
             flex-direction: column;
-            z-index: 100;
+            z-index: 2500;
             box-shadow: 4px 0 20px rgba(0,0,0,0.02);
             overflow-y: auto;
         }
@@ -416,21 +416,115 @@
             }
         }
 
-        @media (max-width: 850px) {
-            .sidebar {
-                display: none;
-            }
+       
+@media (max-width: 850px) {
 
-            .contenido {
-                width: 100%;
-                margin-left: 0;
-                padding: 85px 20px 25px;
-            }
+    /* Botón del menú */
+    .menu-toggle {
+        display: block;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 3000;
+    }
 
-            .decoracion-logo {
-                display: none;
-            }
-        }
+    /* Menú lateral cerrado */
+    .sidebar {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: -290px;
+        width: 270px;
+        height: 100vh;
+        padding: 30px 20px;
+        overflow-y: auto;
+        z-index: 2500;
+        transition: left 0.3s ease;
+    }
+
+    /* Menú lateral abierto */
+    .sidebar.activo {
+        left: 0;
+    }
+
+    /* Fondo oscuro */
+    .overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+    }
+
+    .overlay.activo {
+        display: block;
+    }
+
+    /* Contenido principal */
+    .contenido {
+        width: 100%;
+        margin-left: 0;
+        padding: 85px 20px 25px;
+    }
+
+    .decoracion-logo {
+        display: none;
+    }
+
+    .bienvenida {
+        padding: 30px;
+    }
+
+    .tarjetas,
+    .estadisticas {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+
+    .bienvenida {
+        padding: 28px 22px;
+    }
+
+    .bienvenida h1 {
+        font-size: 34px;
+    }
+
+    .bienvenida p {
+        font-size: 14px;
+    }
+
+    .tarjetas,
+    .estadisticas {
+        grid-template-columns: 1fr;
+    }
+
+    .seccion h2 {
+        font-size: 26px;
+    }
+
+    .botones-inicio {
+        flex-direction: column;
+    }
+
+    .botones-inicio a {
+        width: 100%;
+        text-align: center;
+    }
+
+    .tarjeta {
+        padding: 24px;
+    }
+
+    .acciones-cuenta {
+        flex-direction: column;
+    }
+
+    .acciones-cuenta a {
+        width: 100%;
+        text-align: center;
+    }
+}
 
         @media (max-width: 600px) {
             .bienvenida {

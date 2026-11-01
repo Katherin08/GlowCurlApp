@@ -443,27 +443,237 @@
                 font-size: 32px;
             }
         }
+
+/* AJUSTES PARA CELULARES: PANTALLA INICIAL */
+
+.menu-inicio-toggle {
+    display: none;
+}
+
+@media (max-width: 768px) {
+
+    .barra {
+        width: 100%;
+        min-height: 85px;
+        padding: 12px 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0;
+    }
+
+    .logo-contenedor {
+        gap: 9px;
+        max-width: calc(100% - 55px);
+    }
+
+    .logo-img {
+        width: 43px;
+        height: 43px;
+    }
+
+    .logo-texto {
+        font-size: 23px;
+        line-height: 1;
+    }
+
+ .menu-inicio-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(229, 130, 150, 0.25);
+    border-radius: 12px;
+    background: rgba(229, 130, 150, 0.22);
+    color: #C9687D;
+    font-size: 23px;
+    cursor: pointer;
+    box-shadow: none;
+}
+
+@media (max-width: 768px) {
+    .menu-inicio-toggle {
+        display: flex;
+    }
+}
+
+    .navegacion {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 5px;
+        padding: 15px 0 8px;
+    }
+
+    .navegacion.activo {
+        display: flex;
+    }
+
+    .navegacion a {
+        width: 100%;
+        text-align: center;
+        padding: 12px;
+    }
+
+    .navegacion .registro {
+        margin-top: 5px;
+    }
+
+    .portada {
+        min-height: auto;
+        width: 100%;
+        flex-direction: column-reverse;
+        justify-content: center;
+        gap: 28px;
+        padding: 35px 20px 55px;
+    }
+
+    .portada-decoracion {
+        width: 180px;
+        height: 180px;
+        flex: 0 0 180px;
+    }
+
+    .portada-texto {
+        width: 100%;
+        text-align: center;
+    }
+
+    .etiqueta {
+        max-width: 100%;
+        font-size: 10px;
+        letter-spacing: 1.5px;
+        line-height: 1.6;
+        padding: 8px 12px;
+    }
+
+    .portada h1 {
+        font-size: 38px;
+        line-height: 1.1;
+        margin: 20px 0 15px;
+    }
+
+    .portada p {
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .acciones {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 12px;
+        margin-top: 25px;
+    }
+
+    .boton {
+        width: 100%;
+        max-width: 340px;
+        padding: 14px 18px;
+    }
+
+    .seccion {
+        padding: 55px 20px;
+    }
+
+    .seccion h2 {
+        font-size: 30px;
+    }
+
+    .introduccion {
+        font-size: 14px;
+        margin-bottom: 30px;
+    }
+
+    .caracteristicas {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .caracteristica {
+        padding: 25px 22px;
+    }
+
+    .llamada {
+        margin: 10px 15px 45px;
+        padding: 35px 20px;
+        border-radius: 24px;
+    }
+
+    .llamada h2 {
+        font-size: 29px;
+    }
+
+    .llamada p {
+        font-size: 14px;
+    }
+
+    footer {
+        padding: 25px 15px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .logo-img {
+        width: 39px;
+        height: 39px;
+    }
+
+    .logo-texto {
+        font-size: 21px;
+    }
+
+    .portada-decoracion {
+        width: 155px;
+        height: 155px;
+        flex-basis: 155px;
+    }
+
+    .portada h1 {
+        font-size: 33px;
+    }
+
+    .etiqueta {
+        font-size: 9px;
+    }
+}
+
     </style>
 </head>
 
 <body>
 
-    <header class="barra">
-        <a class="logo-contenedor" href="index.html">
-            <img src="img/logo.png" alt="Logo Glow Curl App" class="logo-img" onerror="this.src='img/logo.png'; this.onerror=null;">
-            <span class="logo-texto">Glow <span>Curl</span></span>
-        </a>
+       
+<header class="barra">
+    <a class="logo-contenedor" href="index.html">
+        <img src="img/logo.png" alt="Logo Glow Curl App" class="logo-img">
+        <span class="logo-texto">Glow <span>Curl</span></span>
+    </a>
 
-        <nav class="navegacion" aria-label="Navegación principal">
-            <a href="pages/cliente/productosCliente.html">Productos</a>
-            <a href="pages/cliente/serviciosCliente.html">Servicios</a>
-            <a href="pages/cliente/acercaCliente.html">Nosotros</a>
-            <a href="pages/auth/loginCliente.html">Ingresar</a>
-            <a class="registro" href="pages/auth/registroCliente.html">
-                Crear cuenta
-            </a>
-        </nav>
-    </header>
+    <button class="menu-inicio-toggle"
+            type="button"
+            aria-label="Abrir menú"
+            aria-expanded="false"
+            onclick="toggleMenuInicio()">
+        ☰
+    </button>
+
+    <nav class="navegacion" id="navegacionInicio" aria-label="Navegación principal">
+        <a href="pages/cliente/productosCliente.html">Productos</a>
+        <a href="pages/cliente/serviciosCliente.html">Servicios</a>
+        <a href="pages/cliente/acercaCliente.html">Nosotros</a>
+        <a href="pages/auth/loginCliente.html">Ingresar</a>
+        <a class="registro" href="pages/auth/registroCliente.html">
+            Crear cuenta
+        </a>
+    </nav>
+</header>
+
 
     <main>
 
@@ -635,6 +845,22 @@
     <footer>
         Glow Curl App · Tu cabello, tu esencia. ✨
     </footer>
+    <script>
+    function toggleMenuInicio() {
+        const navegacion = document.getElementById("navegacionInicio");
+        const boton = document.querySelector(".menu-inicio-toggle");
+
+        const abierto = navegacion.classList.toggle("activo");
+
+        boton.setAttribute("aria-expanded", abierto);
+        boton.setAttribute(
+            "aria-label",
+            abierto ? "Cerrar menú" : "Abrir menú"
+        );
+
+        boton.textContent = abierto ? "×" : "☰";
+    }
+</script>
 
 </body>
 </html>

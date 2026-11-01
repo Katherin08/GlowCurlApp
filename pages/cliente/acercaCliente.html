@@ -57,7 +57,7 @@
             padding: 30px 20px;
             display: flex;
             flex-direction: column;
-            z-index: 100;
+            z-index: 2500;
             box-shadow: 4px 0 20px rgba(0,0,0,0.02);
             overflow-y: auto;
         }
@@ -298,37 +298,112 @@
         }
 
         /* RESPONSIVE */
-        @media (max-width: 850px) {
-            .sidebar {
-                display: none; /* Controlado por el JS de tu menú hamburguesa */
-            }
+       
+/* DISEÑO RESPONSIVE */
 
-            .contenido {
-                width: 100%;
-                margin-left: 0;
-                padding: 85px 20px 30px;
-            }
+@media (max-width: 850px) {
 
-            .tarjetas-informacion {
-                grid-template-columns: 1fr;
-            }
+    .menu-toggle {
+        display: block;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 3000;
+    }
 
-            .historia {
-                grid-column: auto;
-            }
-        }
+    .sidebar {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: -290px;
+        width: 270px;
+        height: 100vh;
+        padding: 30px 20px;
+        overflow-y: auto;
+        z-index: 2500;
+        transition: left 0.3s ease;
+    }
 
-        @media (max-width: 580px) {
-            .presentacion,
-            .informacion-card,
-            .valores {
-                padding: 24px;
-            }
+    .sidebar.activo {
+        left: 0;
+    }
 
-            .encabezado {
-                padding: 25px 20px;
-            }
-        }
+    .overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+    }
+
+    .overlay.activo {
+        display: block;
+    }
+
+    .contenido {
+        width: 100%;
+        margin-left: 0;
+        padding: 85px 20px 30px;
+    }
+
+    .tarjetas-informacion {
+        grid-template-columns: 1fr;
+    }
+
+    .historia {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 580px) {
+
+    .presentacion,
+    .informacion-card,
+    .valores {
+        padding: 24px 20px;
+    }
+
+    .encabezado {
+        padding: 24px 18px;
+    }
+
+    .encabezado-titulo-box {
+        gap: 10px;
+    }
+
+    .encabezado-logo {
+        width: 43px;
+        height: 43px;
+    }
+
+    .encabezado h1 {
+        font-size: 29px;
+    }
+
+    .encabezado p {
+        font-size: 14px;
+    }
+
+    .presentacion h2,
+    .valores h2 {
+        font-size: 24px;
+    }
+
+    .presentacion p,
+    .informacion-card p,
+    .valores p {
+        font-size: 14px;
+    }
+
+    .informacion-card h2 {
+        font-size: 23px;
+    }
+
+    .tarjetas-informacion {
+        gap: 18px;
+    }
+}
+
+          
     </style>
 </head>
 

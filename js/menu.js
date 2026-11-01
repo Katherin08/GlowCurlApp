@@ -1,8 +1,5 @@
 
-// ===============================
 // ABRIR Y CERRAR MENÚ
-// ===============================
-
 function toggleMenu() {
     const sidebar = document.getElementById("sidebar");
     const overlay = document.querySelector(".overlay");
@@ -20,20 +17,11 @@ function cerrarMenu() {
     const sidebar = document.getElementById("sidebar");
     const overlay = document.querySelector(".overlay");
 
-    if (sidebar) {
-        sidebar.classList.remove("activo");
-    }
-
-    if (overlay) {
-        overlay.classList.remove("activo");
-    }
+    if (sidebar) sidebar.classList.remove("activo");
+    if (overlay) overlay.classList.remove("activo");
 }
 
-
-// ===============================
 // CARGAR CONFIGURACIÓN
-// ===============================
-
 function cargarConfiguracion() {
     let config = {};
 
@@ -49,17 +37,14 @@ function cargarConfiguracion() {
         }
     } catch (error) {
         console.error("Error al cargar la configuración:", error);
-        config = {};
     }
 
-    // Nombre de la empresa
     const titulo = document.getElementById("nombreEmpresa");
 
     if (titulo) {
         titulo.textContent = config.empresa || "Glow Curl App";
     }
 
-    // Tema visual
     let colores;
 
     switch (config.tema) {
@@ -73,8 +58,8 @@ function cargarConfiguracion() {
 
         case "beige":
             colores = {
-                sidebar: "#b68b63",
-                boton: "#b68b63",
+                sidebar: "#d46aa3",
+                boton: "#d46aa3",
                 fondo: "#f5eee6"
             };
             break;
@@ -94,11 +79,59 @@ function cargarConfiguracion() {
     raiz.style.setProperty("--fondo", colores.fondo);
 }
 
+// COMPROBAR SESIÓN
+function obtenerUsuarioSesion() {
+    try {
+        if (typeof getUsuario === "function") {
+            const usuario = getUsuario();
 
-// ===============================
-// INICIALIZACIÓN
-// ===============================
+            if (usuario && usuario.id_usuario) {
+                return usuario;
+            }
+        }
 
+        const guardado = localStorage.getItem("usuarioActual");
+
+        if (!guardado) return null;
+
+        const usuario = JSON.parse(guardado);
+
+        return usuario && usuario.id_usuario ? usuario : null;
+
+    } catch (error) {
+        console.error("Error al comprobar sesión:", error);
+        return null;
+    }
+}
+
+// MOSTRAR U OCULTAR OPCIONES
+function actualizarMenuNavegacion() {
+    const usuario = obtenerUsuarioSesion();
+    const tieneSesion = Boolean(usuario);
+
+    document.body.classList.toggle("logged-in", tieneSesion);
+    document.body.classList.toggle("logged-out", !tieneSesion);
+
+    const login = document.getElementById("opcionLogin");
+    const registro = document.getElementById("opcionRegistro");
+    const cerrar = document.getElementById("opcionCerrarSesion");
+
+    if (login) login.style.display = tieneSesion ? "none" : "";
+    if (registro) registro.style.display = tieneSesion ? "none" : "";
+    if (cerrar) cerrar.style.display = tieneSesion ? "" : "none";
+}
+
+// CERRAR SESIÓN
+function cerrarSesion() {
+    localStorage.removeItem("usuarioActual");
+
+    alert("Has cerrado sesión correctamente.");
+
+    window.location.href = "../auth/loginCliente.html";
+}
+
+// INICIALIZAR
 document.addEventListener("DOMContentLoaded", function () {
     cargarConfiguracion();
+    actualizarMenuNavegacion();
 });

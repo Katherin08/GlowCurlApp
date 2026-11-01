@@ -57,7 +57,7 @@
             padding: 30px 20px;
             display: flex;
             flex-direction: column;
-            z-index: 100;
+            z-index: 2500;
             box-shadow: 4px 0 20px rgba(0,0,0,0.02);
             overflow-y: auto;
         }
@@ -319,39 +319,117 @@
         }
 
         /* RESPONSIVE */
-        @media (max-width: 850px) {
-            .sidebar {
-                display: none; /* Controlado por el JS de tu menú hamburguesa */
-            }
+       
+/* RESPONSIVE */
 
-            .contenido {
-                width: 100%;
-                margin-left: 0;
-                padding: 85px 20px 30px;
-            }
+@media (max-width: 850px) {
 
-            .resumen-compra {
-                max-width: none;
-            }
-        }
+    .menu-toggle {
+        display: block;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 3000;
+    }
 
-        @media (max-width: 480px) {
-            .resumen-compra {
-                padding: 20px;
-            }
+    .sidebar {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: -290px;
+        width: 270px;
+        height: 100vh;
+        padding: 30px 20px;
+        overflow-y: auto;
+        z-index: 2500;
+        transition: left 0.3s ease;
+    }
 
-            .acciones {
-                flex-direction: column;
-            }
+    .sidebar.activo {
+        left: 0;
+    }
 
-            .acciones .boton {
-                width: 100%;
-            }
+    .overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+    }
 
-            .encabezado {
-                padding: 25px 20px;
-            }
-        }
+    .overlay.activo {
+        display: block;
+    }
+
+    .contenido {
+        width: 100%;
+        margin-left: 0;
+        padding: 85px 20px 30px;
+    }
+
+    .resumen-compra {
+        max-width: 100%;
+    }
+
+    .tabla-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .encabezado {
+        padding: 24px 18px;
+        border-radius: 20px;
+    }
+
+    .encabezado-titulo-box {
+        gap: 10px;
+    }
+
+    .encabezado-logo {
+        width: 43px;
+        height: 43px;
+    }
+
+    .encabezado h1 {
+        font-size: 30px;
+    }
+
+    .encabezado p {
+        font-size: 14px;
+    }
+
+    .nota {
+        padding: 16px;
+        font-size: 13px;
+    }
+
+    .resumen-compra {
+        padding: 20px;
+    }
+
+    .fila-total {
+        font-size: 22px;
+    }
+
+    #totalCarrito {
+        font-size: 26px;
+    }
+
+    .acciones {
+        flex-direction: column;
+    }
+
+    .acciones .boton {
+        width: 100%;
+    }
+
+    .continuar {
+        margin-bottom: 20px;
+    }
+}
+
     </style>
 </head>
 
@@ -384,8 +462,19 @@
             <li><a href="perfilCliente.html">Mi perfil</a></li>
             <li><a href="comprasCliente.html">Mis compras</a></li>
             <li><a href="historialCliente.html">Historial</a></li>
-            <li><a href="../auth/loginCliente.html">Iniciar sesión</a></li>
-            <li><a href="../auth/registroCliente.html">Crear cuenta</a></li>
+           
+<li id="opcionLogin">
+    <a href="../auth/loginCliente.html">Iniciar sesión</a>
+</li>
+
+<li id="opcionRegistro">
+    <a href="../auth/registroCliente.html">Crear cuenta</a>
+</li>
+
+<li id="opcionCerrarSesion">
+    <a href="#" onclick="cerrarSesion(); return false;">Cerrar sesión</a>
+</li>
+
         </ul>
     </nav>
 

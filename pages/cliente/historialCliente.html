@@ -58,7 +58,7 @@
             padding: 30px 20px;
             display: flex;
             flex-direction: column;
-            z-index: 100;
+            z-index: 2500;
             box-shadow: 4px 0 20px rgba(0,0,0,0.02);
             overflow-y: auto;
         }
@@ -300,27 +300,106 @@
         }
 
         /* RESPONSIVE */
-        @media (max-width: 850px) {
-            .sidebar {
-                display: none; /* Controlado por el JS de tu menú hamburguesa */
-            }
 
-            .contenido {
-                width: 100%;
-                margin-left: 0;
-                padding: 85px 20px 30px;
-            }
-        }
+/* DISEÑO RESPONSIVE */
 
-        @media (max-width: 580px) {
-            .resumen {
-                grid-template-columns: 1fr;
-            }
+@media (max-width: 850px) {
 
-            .encabezado {
-                padding: 25px 20px;
-            }
-        }
+    .menu-toggle {
+        display: block;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 3000;
+    }
+
+    .sidebar {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: -290px;
+        width: 270px;
+        height: 100vh;
+        padding: 30px 20px;
+        overflow-y: auto;
+        z-index: 2500;
+        transition: left 0.3s ease;
+    }
+
+    .sidebar.activo {
+        left: 0;
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+    }
+
+    .overlay.activo {
+        display: block;
+    }
+
+    .contenido {
+        width: 100%;
+        margin-left: 0;
+        padding: 85px 20px 30px;
+    }
+
+    .tabla-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media (max-width: 580px) {
+
+    .resumen {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .resumen-card {
+        padding: 23px;
+    }
+
+    .encabezado {
+        padding: 24px 18px;
+    }
+
+    .encabezado-titulo-box {
+        gap: 10px;
+    }
+
+    .encabezado-logo {
+        width: 43px;
+        height: 43px;
+    }
+
+    .encabezado h1 {
+        font-size: 29px;
+    }
+
+    .encabezado p {
+        font-size: 14px;
+    }
+
+    .seccion-tabla h2 {
+        font-size: 24px;
+    }
+
+    table {
+        min-width: 570px;
+    }
+
+    .enlace-citas {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
+}
+
     </style>
 </head>
 

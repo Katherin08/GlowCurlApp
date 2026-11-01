@@ -57,7 +57,7 @@
             padding: 30px 20px;
             display: flex;
             flex-direction: column;
-            z-index: 100;
+            z-index: 2500;
             box-shadow: 4px 0 20px rgba(0,0,0,0.02);
             overflow-y: auto;
         }
@@ -328,36 +328,111 @@
 
         /* RESPONSIVE */
 
-        @media (max-width: 1200px) {
-            .tarjetas {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-        }
+      
+/* DISEÑO RESPONSIVE */
 
-        @media (max-width: 850px) {
-            .sidebar {
-                display: none;
-            }
+@media (max-width: 1200px) {
+    .tarjetas {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 
-            .contenido {
-                width: 100%;
-                margin-left: 0;
-                padding: 85px 20px 30px;
-            }
-        }
+    .contenido {
+        padding: 35px 30px;
+    }
+}
 
-        @media (max-width: 520px) {
-            .tarjetas {
-                grid-template-columns: 1fr;
-            }
+@media (max-width: 850px) {
+    .menu-toggle {
+        display: block;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 3000;
+    }
 
-            .encabezado {
-                padding: 25px 20px;
-            }
+    .sidebar {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: -290px;
+        width: 270px;
+        height: 100vh;
+        padding: 30px 20px;
+        overflow-y: auto;
+        z-index: 2500;
+        transition: left 0.3s ease;
+    }
 
-            .encabezado-titulo-box {
-                align-items: flex-start;
-            }
+    .sidebar.activo {
+        left: 0;
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+    }
+
+    .overlay.activo {
+        display: block;
+    }
+
+    .contenido {
+        width: 100%;
+        margin-left: 0;
+        padding: 85px 20px 30px;
+    }
+
+    .encabezado {
+        padding: 28px;
+    }
+}
+
+@media (max-width: 520px) {
+    .tarjetas {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .encabezado {
+        padding: 25px 20px;
+    }
+
+    .encabezado-titulo-box {
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .encabezado-logo {
+        width: 42px;
+        height: 42px;
+    }
+
+    .encabezado h1 {
+        font-size: 29px;
+    }
+
+    .encabezado p {
+        font-size: 14px;
+    }
+
+    .producto-card {
+        padding: 20px;
+    }
+
+    .producto-imagen {
+        height: 180px;
+    }
+
+    .enlaces-inferiores {
+        flex-direction: column;
+    }
+
+    .enlaces-inferiores a {
+        justify-content: center;
+    }
+
         }
     </style>
 </head>
@@ -399,11 +474,15 @@
             <li><a href="perfilCliente.html">Mi perfil</a></li>
             <li><a href="comprasCliente.html">Mis compras</a></li>
             <li><a href="historialCliente.html">Historial</a></li>
-            <li><a href="../auth/loginCliente.html">Iniciar sesión</a></li>
-            <li><a href="../auth/registroCliente.html">Crear cuenta</a></li>
-        </ul>
+            <li id="opcionLogin">
+    <a href="../auth/loginCliente.html">Iniciar sesión</a>
+</li>
 
-    </nav>
+<li id="opcionRegistro">
+    <a href="../auth/registroCliente.html">Crear cuenta</a>
+</li>
+</ul>
+</nav>
 
     <main class="contenido">
 

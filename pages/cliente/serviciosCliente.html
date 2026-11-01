@@ -316,18 +316,46 @@
             }
         }
 
-        @media (max-width: 850px) {
-            .sidebar {
-                display: none;
-            }
+       @media (max-width: 850px) {
 
-            .contenido {
-                width: 100%;
-                margin-left: 0;
-                padding: 85px 20px 30px;
-            }
-        }
+    .sidebar {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: -280px;
+        width: 270px;
+        height: 100vh;
+        overflow-y: auto;
+        z-index: 2500;
+        transition: left 0.3s ease;
+    }
 
+    .sidebar.activo {
+        left: 0;
+    }
+
+    .menu-toggle {
+        display: block;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 3000;
+    }
+
+    .overlay.activo {
+        display: block;
+    }
+
+    .contenido {
+        width: 100%;
+        margin-left: 0;
+        padding: 85px 20px 30px;
+    }
+
+    .servicios-grid {
+        grid-template-columns: 1fr;
+    }
+}
         @media (max-width: 580px) {
             .servicios-grid {
                 grid-template-columns: 1fr;
@@ -342,37 +370,40 @@
 
 <body>
 
-    <button class="menu-toggle"
-            onclick="toggleMenu()"
-            aria-label="Abrir menú"
-            aria-controls="sidebar">
-        ☰
-    </button>
+ 
+<button class="menu-toggle" onclick="toggleMenu()" aria-label="Abrir menú">
+    ☰
+</button>
 
-    <div class="overlay" onclick="cerrarMenu()"></div>
+<nav class="sidebar" id="sidebar">
 
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <img src="../../img/logo.png" alt="Glow Curl Logo"
-                 class="sidebar-logo-img"
-                 onerror="this.src='../../img/logo.png'; this.onerror=null;">
+    <div class="sidebar-header">
+        <img src="../../img/logo.png" alt="Glow Curl Logo"
+             class="sidebar-logo-img">
 
-            <div class="sidebar-logo-texto">Glow <span>Curl</span></div>
-        </div>
+        <div class="sidebar-logo-texto">Glow <span>Curl</span></div>
+    </div>
 
-        <ul>
-            <li><a href="inicioCliente.html">Inicio</a></li>
-            <li><a href="serviciosCliente.html" aria-current="page">Servicios</a></li>
-            <li><a href="productosCliente.html">Productos</a></li>
-            <li><a href="citasCliente.html">Mis citas</a></li>
-            <li><a href="perfilCliente.html">Mi perfil</a></li>
-            <li><a href="carritoCliente.html">Carrito</a></li>
-            <li><a href="comprasCliente.html">Mis compras</a></li>
-            <li><a href="historialCliente.html">Historial</a></li>
-            <li><a href="acercaCliente.html">Sobre nosotros</a></li>
-            <li><a href="#" onclick="cerrarSesion(); return false;">Cerrar sesión</a></li>
-        </ul>
-    </nav>
+    <ul>
+        <li><a href="inicioCliente.html">Inicio</a></li>
+        <li><a href="serviciosCliente.html" aria-current="page">Servicios</a></li>
+        <li><a href="productosCliente.html">Productos</a></li>
+        <li><a href="citasCliente.html">Mis citas</a></li>
+        <li><a href="perfilCliente.html">Mi perfil</a></li>
+        <li><a href="carritoCliente.html">Carrito</a></li>
+        <li><a href="comprasCliente.html">Mis compras</a></li>
+        <li><a href="historialCliente.html">Historial</a></li>
+        <li><a href="acercaCliente.html">Sobre nosotros</a></li>
+
+        <li id="opcionCerrarSesion">
+            <a href="#" onclick="cerrarSesion(); return false;">Cerrar sesión</a>
+        </li>
+    </ul>
+
+</nav>
+
+<div class="overlay" onclick="cerrarMenu()"></div>
+
 
     <main class="contenido">
 

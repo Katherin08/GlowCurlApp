@@ -54,7 +54,7 @@
             padding: 30px 20px;
             display: flex;
             flex-direction: column;
-            z-index: 100;
+            z-index: 2500;
             box-shadow: 4px 0 20px rgba(0,0,0,0.02);
             overflow-y: auto;
         }
@@ -280,27 +280,110 @@
             color: var(--texto-oscuro);
         }
 
-        @media (max-width: 850px) {
-            .sidebar {
-                display: none;
-            }
+       
+/* DISEÑO RESPONSIVE */
 
-            .contenido {
-                width: 100%;
-                margin-left: 0;
-                padding: 85px 20px 30px;
-            }
-        }
+@media (max-width: 850px) {
 
-        @media (max-width: 580px) {
-            .resumen {
-                grid-template-columns: 1fr;
-            }
+    .menu-toggle {
+        display: block;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 3000;
+    }
 
-            .encabezado {
-                padding: 25px 20px;
-            }
-        }
+    .sidebar {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: -290px;
+        width: 270px;
+        height: 100vh;
+        padding: 30px 20px;
+        overflow-y: auto;
+        z-index: 2500;
+        transition: left 0.3s ease;
+    }
+
+    .sidebar.activo {
+        left: 0;
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+    }
+
+    .overlay.activo {
+        display: block;
+    }
+
+    .contenido {
+        width: 100%;
+        margin-left: 0;
+        padding: 85px 20px 30px;
+    }
+
+    .encabezado {
+        padding: 28px;
+    }
+
+    .tabla-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media (max-width: 580px) {
+
+    .resumen {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .encabezado {
+        padding: 25px 20px;
+    }
+
+    .encabezado-titulo-box {
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .encabezado-logo {
+        width: 42px;
+        height: 42px;
+    }
+
+    .encabezado h1 {
+        font-size: 30px;
+    }
+
+    .encabezado p {
+        font-size: 14px;
+    }
+
+    .resumen-card {
+        padding: 23px;
+    }
+
+    .seccion-tabla h2 {
+        font-size: 24px;
+    }
+
+    table {
+        min-width: 650px;
+    }
+
+    .nota {
+        padding: 20px;
+        font-size: 13px;
+    }
+}
+
     </style>
 </head>
 
