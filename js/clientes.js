@@ -1,1459 +1,991 @@
-// ======================================
-// GLOW CURL APP
-// CLIENTES.JS
-// PARTE 1
-// ======================================
 
+/* ==========================================
+   GLOW CURL APP - CLIENTES.JS
+   Conexión con Node.js y MySQL
+   ========================================== */
 
+const API = "http://localhost:3000/api";
 
-// ======================================
-// USUARIO ACTUAL
-// ======================================
+// ==========================================
+// SESIÓN
+// ==========================================
 
-function getUsuario(){
-
-return JSON.parse(
-localStorage.getItem("usuarioActual")
-);
-
+function getUsuario() {
+    try {
+        return JSON.parse(localStorage.getItem("usuarioActual")) || null;
+    } catch {
+        return null;
+    }
 }
 
-
-
-// ======================================
-// REGISTRO CLIENTE
-// ======================================
-
-function registrarCliente(){
-
-let nombre=document.getElementById("nombre").value.trim();
-
-let apellido=document.getElementById("apellido").value.trim();
-
-let correo=document.getElementById("correo").value.trim();
-
-let telefono=document.getElementById("telefono").value.trim();
-
-let cabello=document.getElementById("cabello").value;
-
-let password=document.getElementById("password").value;
-
-let confirmar=document.getElementById("confirmar").value;
-
-
-if(
-nombre===""||
-apellido===""||
-correo===""||
-telefono===""||
-cabello===""||
-password===""||
-confirmar===""){
-
-alert("Complete todos los campos");
-
-return;
-
+function guardarSesion(usuario) {
+    localStorage.setItem("usuarioActual", JSON.stringify(usuario));
 }
 
-
-if(password!==confirmar){
-
-alert("Las contraseñas no coinciden");
-
-return;
-
+function correoUsuario(usuario) {
+    return String(usuario?.correo || "").trim().toLowerCase();
 }
 
-
-let usuarios=
-
-JSON.parse(
-localStorage.getItem("usuarios")
-)||[];
-
-
-let existe=
-
-usuarios.find(
-
-u=>u.correo===correo
-
-);
-
-
-if(existe){
-
-alert("Ya existe un usuario con ese correo.");
-
-return;
-
+function formatoPrecio(valor) {
+    return "$" + Number(valor || 0).toLocaleString("es-CO");
 }
 
-
-usuarios.push({
-
-nombre,
-apellido,
-correo,
-telefono,
-cabello,
-password
-
-});
-
-
-localStorage.setItem(
-
-"usuarios",
-
-JSON.stringify(
-usuarios
-)
-
-);
-
-
-alert("Registro exitoso");
-
-
-window.location.href="loginCliente.html";
-
-}
-
-
-
-// ======================================
-// LOGIN
-// ======================================
-
-function ingresarCliente(){
-
-let usuario=
-
-document.getElementById(
-"usuarioCliente"
-).value.trim();
-
-let password=
-
-document.getElementById(
-"passwordCliente"
-).value;
-
-
-if(usuario===""||password===""){
-
-alert("Ingrese usuario y contraseña");
-
-return;
-
-}
-
-
-let usuarios=
-
-JSON.parse(
-localStorage.getItem("usuarios")
-)||[];
-
-
-let encontrado=
-
-usuarios.find(
-
-u=>
-
-u.correo===usuario &&
-
-u.password===password
-
-);
-
-
-if(!encontrado){
-
-alert("Correo o contraseña incorrectos");
-
-return;
-
-}
-
-
-localStorage.setItem(
-
-"usuarioActual",
-
-JSON.stringify(
-encontrado
-)
-
-);
-
-
-window.location.href="../cliente/inicioCliente.html";
-
-}
-
-
-
-// ======================================
-// LIMPIAR LOGIN
-// ======================================
-
-function limpiarCliente(){
-
-let u=document.getElementById("usuarioCliente");
-
-let p=document.getElementById("passwordCliente");
-
-if(u)u.value="";
-
-if(p)p.value="";
-
-}
-
-
-
-// ======================================
-// MOSTRAR PASSWORD
-// ======================================
-
-function mostrarPasswordCliente(){
-
-let pass=document.getElementById("passwordCliente");
-
-if(!pass)return;
-
-if(pass.type==="password"){
-
-pass.type="text";
-
-}else{
-
-pass.type="password";
-
-}
-
-}
-
-
-
-// ======================================
-// PERFIL
-// ======================================
-
-function cargarPerfil(){
-
-let usuario=getUsuario();
-
-if(!usuario)return;
-
-
-if(document.getElementById("nombre")){
-
-document.getElementById("nombre").value=usuario.nombre;
-
-document.getElementById("apellido").value=usuario.apellido;
-
-document.getElementById("correo").value=usuario.correo;
-
-document.getElementById("telefono").value=usuario.telefono;
-
-document.getElementById("cabello").value=usuario.cabello;
-
-}
-
-}
-
-
-
-// ======================================
-// ACTUALIZAR PERFIL
-// ======================================
-
-function actualizarPerfil(){
-
-let usuario=getUsuario();
-
-if(!usuario)return;
-
-
-usuario.nombre=document.getElementById("nombre").value;
-
-usuario.apellido=document.getElementById("apellido").value;
-
-usuario.correo=document.getElementById("correo").value;
-
-usuario.telefono=document.getElementById("telefono").value;
-
-usuario.cabello=document.getElementById("cabello").value;
-
-
-localStorage.setItem(
-
-"usuarioActual",
-
-JSON.stringify(usuario)
-
-);
-
-
-let usuarios=
-
-JSON.parse(
-localStorage.getItem("usuarios")
-)||[];
-
-
-usuarios=usuarios.map(
-
-u=>{
-
-if(u.correo===usuario.correo){
-
-return usuario;
-
-}
-
-return u;
-
-}
-
-);
-
-
-localStorage.setItem(
-
-"usuarios",
-
-JSON.stringify(
-usuarios
-)
-
-);
-
-
-alert("Perfil actualizado correctamente.");
-
-}
-
-
-
-// ======================================
-// INICIO CLIENTE
-// ======================================
-
-function cargarInicio(){
-
-let usuario=getUsuario();
-
-if(!usuario)return;
-
-
-let citas=
-
-JSON.parse(
-localStorage.getItem("citas")
-)||[];
-
-
-let compras=
-
-JSON.parse(
-localStorage.getItem("compras")
-)||[];
-
-
-let misCitas=
-
-citas.filter(
-
-c=>c.correo===usuario.correo
-
-);
-
-
-let misCompras=
-
-compras.filter(
-
-c=>c.correo===usuario.correo
-
-);
-
-
-let totalServicios=
-
-document.getElementById("totalServicios");
-
-if(totalServicios){
-
-totalServicios.innerHTML=misCitas.length;
-
-}
-
-
-let totalProductos=
-
-document.getElementById("totalProductos");
-
-if(totalProductos){
-
-totalProductos.innerHTML=misCompras.length;
-
-}
-
-
-
-// =======================
-// PRÓXIMA CITA
-// =======================
-
-let proxima = document.getElementById("proximaCita");
-
-if(proxima){
-
-    let pendientes = misCitas.filter(c =>
-        c.estado.includes("Pendiente")
-    );
-
-    if(pendientes.length > 0){
-
-        pendientes.sort((a,b)=>{
-
-            let fechaA = new Date(a.fecha + " " + a.hora);
-            let fechaB = new Date(b.fecha + " " + b.hora);
-
-            return fechaA - fechaB;
-
-        });
-
-        let cita = pendientes[0];
-
-        proxima.innerHTML = `
-        <strong>${cita.servicio}</strong><br>
-        📅 ${cita.fecha}<br>
-        🕒 ${cita.hora}
-        `;
-
-    }else{
-
-        proxima.innerHTML = "Sin citas";
-
+async function solicitar(ruta, opciones = {}) {
+    const respuesta = await fetch(API + ruta, {
+        ...opciones,
+        headers: {
+            "Content-Type": "application/json",
+            ...(opciones.headers || {})
+        }
+    });
+
+    const resultado = await respuesta.json();
+
+    if (!respuesta.ok || resultado.ok === false) {
+        throw new Error(resultado.mensaje || "Ocurrió un error.");
     }
 
+    return resultado;
 }
 
+function exigirUsuario() {
+    const usuario = getUsuario();
+
+    if (!usuario || !usuario.id_usuario) {
+        alert("Para continuar, inicia sesión o crea una cuenta.");
+        window.location.href = "../auth/loginCliente.html";
+        return null;
+    }
+
+    return usuario;
 }
 
+function protegerPaginaPrivada() {
+    const privada =
+        document.getElementById("formPerfil") ||
+        document.getElementById("listaCitas") ||
+        document.getElementById("listaCompras") ||
+        document.getElementById("listaHistorial");
 
+    if (privada && !getUsuario()) {
+        window.location.replace("../auth/loginCliente.html");
+        return false;
+    }
 
-// ======================================
-// CERRAR SESIÓN
-// ======================================
-
-function cerrarSesion(){
-
-localStorage.removeItem("usuarioActual");
-
-window.location.href="../auth/loginCliente.html";
-
-}
-// ======================================
-// SERVICIOS Y CITAS
-// ======================================
-
-
-// ======================================
-// RESERVAR CITA
-// ======================================
-
-function reservar(servicio,idFecha,idHora){
-
-let usuario=getUsuario();
-
-if(!usuario){
-
-alert("Debe iniciar sesión.");
-
-return;
-
+    return true;
 }
 
-let fecha=document.getElementById(idFecha).value;
-
-let hora=document.getElementById(idHora).value;
-
-
-if(fecha===""||hora===""){
-
-alert("Seleccione una fecha y una hora.");
-
-return;
-
+function cerrarSesion() {
+    localStorage.removeItem("usuarioActual");
+    window.location.href = "../auth/loginCliente.html";
 }
 
+// ==========================================
+// REGISTRO
+// ==========================================
 
-// FECHA MÍNIMA
+async function registrarCliente() {
+    const nombre = document.getElementById("nombre")?.value.trim();
+    const apellido = document.getElementById("apellido")?.value.trim();
+    const correo = document.getElementById("correo")?.value.trim().toLowerCase();
+    const telefono = document.getElementById("telefono")?.value.trim();
+    const cabello = document.getElementById("cabello")?.value.trim().toLowerCase();
+    const password = document.getElementById("password")?.value;
+    const confirmar = document.getElementById("confirmar")?.value;
 
-let hoy=new Date();
+    if (!nombre || !apellido || !correo || !telefono ||
+        !cabello || !password || !confirmar) {
+        alert("Completa todos los campos.");
+        return;
+    }
 
-hoy.setHours(0,0,0,0);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+        alert("Ingresa un correo electrónico válido.");
+        return;
+    }
 
-let fechaSeleccionada=new Date(fecha);
+    if (!["ondulado", "rizo", "afro"].includes(cabello)) {
+        alert("Selecciona un tipo de cabello válido.");
+        return;
+    }
 
-if(fechaSeleccionada<hoy){
+    if (password !== confirmar) {
+        alert("Las contraseñas no coinciden.");
+        return;
+    }
 
-alert("No puede reservar fechas anteriores.");
+    try {
+        const resultado = await solicitar("/clientes", {
+            method: "POST",
+            body: JSON.stringify({
+                nombre,
+                apellido,
+                correo,
+                telefono,
+                cabello,
+                password
+            })
+        });
 
-return;
+        alert(resultado.mensaje);
+        window.location.href = "loginCliente.html";
 
+    } catch (error) {
+        console.error("Error en registro:", error);
+        alert(error.message);
+    }
 }
 
+// ==========================================
+// INICIO DE SESIÓN
+// ==========================================
 
-// HORARIO OCUPADO
+async function ingresarCliente() {
+    const campoCorreo = document.getElementById("usuarioCliente");
+    const campoPassword = document.getElementById("passwordCliente");
 
-let citas=
+    if (!campoCorreo || !campoPassword) {
+        alert("No se encontraron los campos de inicio de sesión.");
+        return;
+    }
 
-JSON.parse(
-localStorage.getItem("citas")
-)||[];
+    const correo = campoCorreo.value.trim().toLowerCase();
+    const password = campoPassword.value;
 
+    if (!correo || !password) {
+        alert("Escribe tu correo y contraseña.");
+        return;
+    }
 
-let ocupada=
+    try {
+        const resultado = await solicitar("/login", {
+            method: "POST",
+            body: JSON.stringify({ correo, password })
+        });
 
-citas.find(
+        guardarSesion(resultado.usuario);
 
-c=>
+        alert("¡Bienvenido/a a Glow Curl!");
 
-c.fecha===fecha &&
+        const volver = new URLSearchParams(window.location.search).get("volver");
 
-c.hora===hora &&
+        if (volver) {
+            window.location.href = volver;
+        } else {
+            window.location.href = "../cliente/inicioCliente.html";
+        }
 
-c.estado!=="Cancelada"
-
-);
-
-
-if(ocupada){
-
-alert("Ese horario ya está reservado.");
-
-return;
-
+    } catch (error) {
+        console.error("Error de inicio de sesión:", error);
+        alert(error.message);
+    }
 }
 
+function mostrarPasswordCliente() {
+    const campo = document.getElementById("passwordCliente");
+    if (!campo) return;
 
-let nueva={
-
-id:Date.now(),
-
-correo:usuario.correo,
-
-servicio:servicio,
-
-fecha:fecha,
-
-hora:hora,
-
-estado:"Pendiente"
-
-};
-
-
-citas.push(nueva);
-console.log(nueva);
-
-localStorage.setItem(
-
-"citas",
-
-JSON.stringify(citas)
-
-);
-
-
-alert("Cita reservada correctamente.");
-
-mostrarCitas();
-
-cargarInicio();
-
+    campo.type = campo.type === "password" ? "text" : "password";
 }
 
+function limpiarCliente() {
+    const correo = document.getElementById("usuarioCliente");
+    const password = document.getElementById("passwordCliente");
 
-
-
-// ======================================
-// MOSTRAR CITAS
-// ======================================
-
-function mostrarCitas(){
-
-let tabla=document.getElementById("listaCitas");
-
-if(!tabla)return;
-
-
-let usuario=getUsuario();
-
-if(!usuario)return;
-
-
-let citas=
-
-JSON.parse(
-localStorage.getItem("citas")
-)||[];
-
-
-let mis=
-
-citas.filter(
-
-c=>
-
-c.correo===usuario.correo &&
-
-c.estado!=="Cancelada"
-
-);
-
-
-mis.sort(
-
-(a,b)=>
-
-new Date(a.fecha)-new Date(b.fecha)
-
-);
-
-
-tabla.innerHTML="";
-
-
-if(mis.length===0){
-
-tabla.innerHTML=`
-
-<tr>
-
-<td colspan="5">
-
-No tienes citas registradas
-
-</td>
-
-</tr>
-
-`;
-
-return;
-
+    if (correo) correo.value = "";
+    if (password) password.value = "";
 }
 
+// ==========================================
+// PERFIL
+// ==========================================
 
-mis.forEach(c=>{
+async function cargarPerfil() {
+    const usuario = exigirUsuario();
+    if (!usuario) return;
 
-tabla.innerHTML+=`
+    try {
+        const resultado = await solicitar("/usuarios");
 
-<tr>
+        const datos = resultado.usuarios.find(
+            persona => Number(persona.id_usuario) === Number(usuario.id_usuario)
+        );
 
-<td>${c.servicio}</td>
+        if (!datos) {
+            alert("No se encontró la información de tu perfil.");
+            return;
+        }
 
-<td>${c.fecha}</td>
+        const campos = {
+            nombre: datos.nombre || "",
+            apellido: datos.apellido || "",
+            correo: datos.correo || "",
+            telefono: datos.telefono || "",
+            cabello: datos.cabello || datos.tipo_cabello || ""
+        };
 
-<td>${c.hora}</td>
+        Object.entries(campos).forEach(([id, valor]) => {
+            const campo = document.getElementById(id);
+            if (campo) campo.value = valor;
+        });
 
-<td>${c.estado}</td>
+        guardarSesion({
+            ...usuario,
+            ...datos
+        });
 
-<td>
-
-<button onclick="cancelarCita(${c.id})">
-
-Cancelar
-
-</button>
-
-<button onclick="reprogramarCita(${c.id})">
-
-Cambiar
-
-</button>
-
-</td>
-
-</tr>
-
-`;
-
-});
-
+    } catch (error) {
+        console.error("Error al cargar el perfil:", error);
+        alert(error.message);
+    }
 }
 
+async function actualizarPerfil() {
+    const usuario = exigirUsuario();
+    if (!usuario) return;
 
+    const nombre = document.getElementById("nombre")?.value.trim();
+    const apellido = document.getElementById("apellido")?.value.trim();
+    const correo = document.getElementById("correo")?.value.trim().toLowerCase();
+    const telefono = document.getElementById("telefono")?.value.trim();
+    const cabello = document.getElementById("cabello")?.value.trim().toLowerCase();
 
+    if (!nombre || !apellido || !correo || !telefono || !cabello) {
+        alert("Completa todos los campos.");
+        return;
+    }
 
-// ======================================
-// CANCELAR CITA
-// ======================================
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+        alert("Ingresa un correo válido.");
+        return;
+    }
 
-function cancelarCita(id){
+    if (!["ondulado", "rizo", "afro"].includes(cabello)) {
+        alert("Selecciona un tipo de cabello válido.");
+        return;
+    }
 
-let citas=
+    try {
+        const resultado = await solicitar(
+            `/usuarios/${usuario.id_usuario}`,
+            {
+                method: "PUT",
+                body: JSON.stringify({
+                    nombre,
+                    apellido,
+                    correo,
+                    telefono,
+                    cabello,
+                    rol: usuario.rol || "cliente"
+                })
+            }
+        );
 
-JSON.parse(
-localStorage.getItem("citas")
-)||[];
+        const usuarioActualizado = {
+            ...usuario,
+            nombre,
+            apellido,
+            correo,
+            telefono,
+            cabello,
+            tipo_cabello: cabello
+        };
 
+        guardarSesion(usuarioActualizado);
 
-citas.forEach(c=>{
+        alert(resultado.mensaje);
 
-if(c.id===id){
-
-c.estado="Cancelada";
-
+    } catch (error) {
+        console.error("Error al actualizar el perfil:", error);
+        alert(error.message);
+    }
 }
 
-});
-
-
-localStorage.setItem(
-
-"citas",
-
-JSON.stringify(citas)
-
-);
-
-
-alert("La cita fue cancelada.");
-
-mostrarCitas();
-
-mostrarHistorial();
-
-cargarInicio();
-
-}
-
-
-
-
-// ======================================
-// REPROGRAMAR
-// ======================================
-
-function reprogramarCita(id){
-
-let nuevaFecha=
-
-prompt("Ingrese la nueva fecha (AAAA-MM-DD)");
-
-if(!nuevaFecha)return;
-
-
-let nuevaHora=
-
-prompt("Ingrese la nueva hora (Ej: 10:00)");
-
-if(!nuevaHora)return;
-
-
-let citas=
-
-JSON.parse(
-localStorage.getItem("citas")
-)||[];
-
-
-let existe=
-
-citas.find(
-
-c=>
-
-c.fecha===nuevaFecha &&
-
-c.hora===nuevaHora &&
-
-c.estado!=="Cancelada"
-
-);
-
-
-if(existe){
-
-alert("Ese horario ya está ocupado.");
-
-return;
-
-}
-
-
-citas.forEach(c=>{
-
-if(c.id===id){
-
-c.fecha=nuevaFecha;
-
-c.hora=nuevaHora;
-
-c.estado="Reprogramada";
-
-}
-
-});
-
-
-localStorage.setItem(
-
-"citas",
-
-JSON.stringify(citas)
-
-);
-
-
-alert("La cita fue reprogramada.");
-
-mostrarCitas();
-
-mostrarHistorial();
-
-cargarInicio();
-
-}
-
-
-
-
-// ======================================
-// HISTORIAL
-// ======================================
-
-function mostrarHistorial(){
-
-let tabla=document.getElementById("listaHistorial");
-
-if(!tabla)return;
-
-
-let usuario=getUsuario();
-
-if(!usuario)return;
-
-
-let citas=
-
-JSON.parse(
-localStorage.getItem("citas")
-)||[];
-
-
-let historial=
-
-citas.filter(
-
-c=>
-
-c.correo===usuario.correo &&
-
-(
-
-c.estado==="Cancelada"||
-
-c.estado==="Reprogramada"
-
-)
-
-);
-
-
-tabla.innerHTML="";
-
-
-if(historial.length===0){
-
-tabla.innerHTML=`
-
-<tr>
-
-<td colspan="4">
-
-No hay historial de citas
-
-</td>
-
-</tr>
-
-`;
-
-return;
-
-}
-
-
-historial.forEach(c=>{
-
-tabla.innerHTML+=`
-
-<tr>
-
-<td>${c.servicio}</td>
-
-<td>${c.fecha}</td>
-
-<td>${c.hora}</td>
-
-<td>${c.estado}</td>
-
-</tr>
-
-`;
-
-});
-
-}
-// ======================================
+// ==========================================
 // PRODUCTOS
-// ======================================
+// ==========================================
 
-// COMPRAR DIRECTAMENTE
-function comprarProducto(producto,precio){
+function obtenerImagenProducto(nombre) {
+    const nombreNormalizado = String(nombre || "").toLowerCase();
 
-let usuario=getUsuario();
+    if (nombreNormalizado.includes("shampoo")) {
+        return "../../img/shampoo.png";
+    }
 
-if(!usuario){
-alert("Debe iniciar sesión.");
-return;
+    if (nombreNormalizado.includes("crema")) {
+        return "../../img/crema.png";
+    }
+
+    if (nombreNormalizado.includes("aceite")) {
+        return "../../img/aceite.png";
+    }
+
+    if (nombreNormalizado.includes("mascarilla")) {
+        return "../../img/mascarilla.png";
+    }
+
+    return "../../img/crema.png";
 }
 
-let compras=JSON.parse(localStorage.getItem("compras"))||[];
+async function cargarProductos() {
+    const contenedor = document.getElementById("contenedorProductos");
+    if (!contenedor) return;
 
-compras.push({
+    try {
+        const resultado = await solicitar("/productos");
+        const productos = resultado.productos || [];
 
-correo:usuario.correo,
+        contenedor.innerHTML = "";
 
-producto:producto,
+        if (!productos.length) {
+            contenedor.textContent = "No hay productos disponibles.";
+            return;
+        }
 
-precio:precio,
+        productos.forEach(producto => {
+            const tarjeta = document.createElement("div");
+            tarjeta.className = "producto-card";
 
-cantidad:1,
+            const imagen = document.createElement("img");
+            imagen.className = "producto-imagen";
+            imagen.src = obtenerImagenProducto(producto.nombre);
+            imagen.alt = producto.nombre;
+            imagen.onerror = () => {
+                imagen.src = "../../img/crema.png";
+            };
 
-fecha:new Date().toLocaleDateString()
+            const nombre = document.createElement("h3");
+            nombre.textContent = producto.nombre;
 
-});
+            const descripcion = document.createElement("p");
+            descripcion.className = "descripcion";
+            descripcion.textContent = producto.descripcion || "";
 
-localStorage.setItem("compras",JSON.stringify(compras));
+            const precio = document.createElement("p");
+            precio.className = "precio";
+            precio.textContent = formatoPrecio(producto.precio);
 
-alert("Compra realizada.");
+            const stock = Number(producto.cantidad ?? producto.stock ?? 0);
 
-cargarInicio();
+            const boton = document.createElement("button");
+            boton.type = "button";
 
+            if (stock > 0) {
+                boton.textContent = "Agregar al carrito";
+                boton.onclick = () => agregarCarrito(
+                    producto.id_producto,
+                    producto.nombre,
+                    producto.precio
+                );
+            } else {
+                boton.textContent = "Agotado";
+                boton.disabled = true;
+            }
+
+            tarjeta.append(imagen, nombre, descripcion, precio, boton);
+            contenedor.appendChild(tarjeta);
+        });
+
+    } catch (error) {
+        console.error("Error al cargar productos:", error);
+        contenedor.textContent = error.message;
+    }
 }
 
+// ==========================================
+// SERVICIOS
+// ==========================================
 
+async function cargarServicios() {
+    const contenedor = document.getElementById("contenedorServicios");
+    if (!contenedor) return;
 
-// ======================================
+    try {
+        const resultado = await solicitar("/servicios");
+
+        contenedor.innerHTML = "";
+
+        if (!resultado.servicios.length) {
+            contenedor.textContent = "No hay servicios disponibles.";
+            return;
+        }
+
+        resultado.servicios.forEach(servicio => {
+            const tarjeta = document.createElement("div");
+            tarjeta.className = "tarjeta-servicio";
+
+            const nombre = document.createElement("h3");
+            nombre.textContent = servicio.nombre;
+
+            const descripcion = document.createElement("p");
+            descripcion.textContent = servicio.descripcion || "";
+
+            const precio = document.createElement("p");
+            precio.textContent = formatoPrecio(servicio.precio);
+
+            tarjeta.append(nombre, descripcion, precio);
+            contenedor.appendChild(tarjeta);
+        });
+
+    } catch (error) {
+        console.error(error);
+        contenedor.textContent = error.message;
+    }
+}
+
+// ==========================================
 // CARRITO
-// ======================================
+// ==========================================
 
-function agregarCarrito(producto,precio){
+function claveCarritoActual() {
+    const usuario = getUsuario();
 
-let usuario=getUsuario();
-
-if(!usuario){
-alert("Debe iniciar sesión.");
-return;
+    return usuario
+        ? "carrito_" + correoUsuario(usuario)
+        : "carrito_visitante";
 }
 
-let carrito=JSON.parse(localStorage.getItem("carrito"))||[];
+function obtenerCarritoActual() {
+    try {
+        return JSON.parse(
+            localStorage.getItem(claveCarritoActual())
+        ) || [];
+    } catch {
+        return [];
+    }
+}
+
+function guardarCarritoActual(carrito) {
+    localStorage.setItem(
+        claveCarritoActual(),
+        JSON.stringify(carrito)
+    );
+}
+
+function agregarCarrito(id, producto, precio) {
+    const carrito = obtenerCarritoActual();
+
+    const existente = carrito.find(
+        item => Number(item.id_producto) === Number(id)
+    );
+
+    if (existente) {
+        existente.cantidad++;
+    } else {
+        carrito.push({
+            id_producto: id,
+            producto,
+            precio: Number(precio),
+            cantidad: 1
+        });
+    }
+
+    guardarCarritoActual(carrito);
+    alert("Producto agregado al carrito.");
+    mostrarCarrito();
+}
+
+function mostrarCarrito() {
+    const tabla = document.getElementById("listaCarrito");
+    if (!tabla) return;
+
+    const carrito = obtenerCarritoActual();
+    tabla.innerHTML = "";
+
+    let total = 0;
+
+    if (!carrito.length) {
+        tabla.innerHTML = '<tr><td colspan="5">El carrito está vacío.</td></tr>';
+    }
+
+    carrito.forEach((producto, indice) => {
+        const cantidad = Number(producto.cantidad) || 1;
+        const precio = Number(producto.precio) || 0;
+        const subtotal = cantidad * precio;
+        total += subtotal;
+
+        const fila = document.createElement("tr");
+
+        [
+            producto.producto,
+            formatoPrecio(precio),
+            cantidad,
+            formatoPrecio(subtotal)
+        ].forEach(valor => {
+            const celda = document.createElement("td");
+            celda.textContent = valor;
+            fila.appendChild(celda);
+        });
+
+        const acciones = document.createElement("td");
+
+        const mas = document.createElement("button");
+        mas.textContent = "+";
+        mas.type = "button";
+        mas.onclick = () => cambiarCantidad(indice, 1);
+
+        const menos = document.createElement("button");
+        menos.textContent = "−";
+        menos.type = "button";
+        menos.onclick = () => cambiarCantidad(indice, -1);
+
+        const eliminar = document.createElement("button");
+        eliminar.textContent = "Eliminar";
+        eliminar.type = "button";
+        eliminar.onclick = () => eliminarItem(indice);
+
+        acciones.append(mas, menos, eliminar);
+        fila.appendChild(acciones);
+        tabla.appendChild(fila);
+    });
+
+    const totalElemento = document.getElementById("totalCarrito");
+    if (totalElemento) totalElemento.textContent = formatoPrecio(total);
+}
+
+function cambiarCantidad(indice, cambio) {
+    const carrito = obtenerCarritoActual();
+    if (!carrito[indice]) return;
+
+    carrito[indice].cantidad += cambio;
+
+    const actualizado = carrito.filter(
+        producto => producto.cantidad > 0
+    );
+
+    guardarCarritoActual(actualizado);
+    mostrarCarrito();
+}
+
+function aumentar(indice) {
+    cambiarCantidad(indice, 1);
+}
+
+function disminuir(indice) {
+    cambiarCantidad(indice, -1);
+}
+
+function eliminarItem(indice) {
+    const carrito = obtenerCarritoActual();
+    carrito.splice(indice, 1);
+    guardarCarritoActual(carrito);
+    mostrarCarrito();
+}
+
+function vaciarCarrito() {
+    if (!confirm("¿Deseas vaciar el carrito?")) return;
+
+    guardarCarritoActual([]);
+    mostrarCarrito();
+}
+
+// ==========================================
+// COMPRAS Y VENTAS
+// ==========================================
+
+async function finalizarCompra() {
+    const usuario = exigirUsuario();
+    if (!usuario) return;
+
+    const carrito = obtenerCarritoActual();
+
+    if (!carrito.length) {
+        alert("El carrito está vacío.");
+        return;
+    }
+
+    try {
+        const resultado = await solicitar("/ventas", {
+            method: "POST",
+            body: JSON.stringify({
+                id_usuario: usuario.id_usuario,
+                productos: carrito.map(item => ({
+                    id_producto: item.id_producto,
+                    cantidad: item.cantidad
+                }))
+            })
+        });
+
+        guardarCarritoActual([]);
+
+        alert(resultado.mensaje);
+        mostrarCarrito();
+        await mostrarCompras();
+        await cargarInicio();
+
+    } catch (error) {
+        console.error("Error al finalizar la compra:", error);
+        alert(error.message);
+    }
+}
+
+async function mostrarCompras() {
+    const tabla = document.getElementById("listaCompras");
+    if (!tabla) return;
+
+    const usuario = exigirUsuario();
+    if (!usuario) return;
+
+    try {
+        const resultado = await solicitar(
+            `/ventas/cliente/${usuario.id_usuario}`
+        );
+
+        const compras = resultado.compras || [];
+        tabla.innerHTML = "";
+
+        let total = 0;
+        let cantidadTotal = 0;
+
+        if (!compras.length) {
+            tabla.innerHTML = '<tr><td colspan="5">No hay compras registradas.</td></tr>';
+        }
+
+        compras.forEach(compra => {
+            const cantidad = Number(compra.cantidad) || 0;
+            const precio = Number(compra.precio) || 0;
+            const subtotal = Number(compra.subtotal) || cantidad * precio;
+
+            total += subtotal;
+            cantidadTotal += cantidad;
+
+            const fila = document.createElement("tr");
+
+            [
+                compra.producto,
+                cantidad,
+                formatoPrecio(precio),
+                String(compra.fecha).slice(0, 10),
+                formatoPrecio(subtotal)
+            ].forEach(valor => {
+                const celda = document.createElement("td");
+                celda.textContent = valor ?? "";
+                fila.appendChild(celda);
+            });
+
+            tabla.appendChild(fila);
+        });
+
+        const cantidadElemento = document.getElementById("cantidadCompras");
+        const totalElemento = document.getElementById("totalCompras");
+
+        if (cantidadElemento) cantidadElemento.textContent = cantidadTotal;
+        if (totalElemento) totalElemento.textContent = formatoPrecio(total);
+
+    } catch (error) {
+        console.error("Error al cargar las compras:", error);
+        tabla.innerHTML = '<tr><td colspan="5">No se pudieron cargar las compras.</td></tr>';
+    }
+}
+
+// ==========================================
+// CITAS
+// ==========================================
+
+function fechaValidaNoAnterior(fechaTexto) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(fechaTexto)) return false;
+
+    const fecha = new Date(fechaTexto + "T00:00:00");
+
+    if (Number.isNaN(fecha.getTime())) return false;
+
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    return fecha >= hoy;
+}
+
+function horaValida(hora) {
+    return /^([01]\d|2[0-3]):[0-5]\d$/.test(hora);
+}
+
+async function reservar(servicio, idFecha, idHora) {
+    const usuario = exigirUsuario();
+    if (!usuario) return;
+
+    const fecha = document.getElementById(idFecha)?.value;
+    const hora = document.getElementById(idHora)?.value;
+
+    if (!usuario.id_cliente) {
+        alert("No se encontró el identificador del cliente. Cierra sesión e inicia sesión nuevamente.");
+        return;
+    }
+
+    if (!fecha || !hora) {
+        alert("Selecciona una fecha y una hora.");
+        return;
+    }
+
+    if (!fechaValidaNoAnterior(fecha) || !horaValida(hora)) {
+        alert("Selecciona una fecha y hora válidas.");
+        return;
+    }
+
+    try {
+        const resultado = await solicitar("/citas", {
+            method: "POST",
+            body: JSON.stringify({
+                id_cliente: usuario.id_cliente,
+                id_usuario: usuario.id_usuario,
+                servicio,
+                fecha,
+                hora
+            })
+        });
+
+        alert(resultado.mensaje);
+
+        await mostrarCitas();
+        await mostrarHistorial();
+        await cargarInicio();
+
+    } catch (error) {
+        console.error("Error al reservar:", error);
+        alert(error.message);
+    }
+}
+
+async function mostrarCitas() {
+    const tabla = document.getElementById("listaCitas");
+    if (!tabla) return;
+
+    const usuario = exigirUsuario();
+    if (!usuario) return;
+
+    try {
+        const resultado = await solicitar(
+            `/citas/cliente/${usuario.id_usuario}`
+        );
+
+        const citas = resultado.citas || [];
+        tabla.innerHTML = "";
+
+        const activas = citas.filter(
+            cita => cita.estado !== "Cancelada"
+        );
+
+        if (!activas.length) {
+            tabla.innerHTML = '<tr><td colspan="5">No tienes citas registradas.</td></tr>';
+            return;
+        }
+
+        activas.forEach(cita => {
+            const fila = document.createElement("tr");
+
+            [
+                cita.servicio,
+                String(cita.fecha).slice(0, 10),
+                String(cita.hora).slice(0, 5),
+                cita.estado
+            ].forEach(valor => {
+                const celda = document.createElement("td");
+                celda.textContent = valor || "";
+                fila.appendChild(celda);
+            });
+
+            const acciones = document.createElement("td");
+
+            const cancelar = document.createElement("button");
+            cancelar.textContent = "Cancelar";
+            cancelar.type = "button";
+            cancelar.onclick = () => cancelarCita(cita.id_cita);
+
+            acciones.appendChild(cancelar);
+            fila.appendChild(acciones);
+            tabla.appendChild(fila);
+        });
+
+    } catch (error) {
+        console.error(error);
+        tabla.innerHTML = '<tr><td colspan="5">No se pudieron cargar las citas.</td></tr>';
+    }
+}
+
+async function cancelarCita(id) {
+    if (!confirm("¿Seguro que deseas cancelar esta cita?")) return;
+
+    try {
+        const resultado = await solicitar(`/citas/${id}`, {
+            method: "DELETE"
+        });
+
+        alert(resultado.mensaje);
+        await mostrarCitas();
+        await mostrarHistorial();
+        await cargarInicio();
+
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    }
+}
+
+// ==========================================
+// HISTORIAL
+// ==========================================
 
 
-let existe=
+async function mostrarHistorial() {
+    const tabla = document.getElementById("listaHistorial");
+    if (!tabla) return;
 
-carrito.find(
+    const usuario = exigirUsuario();
+    if (!usuario) return;
 
-p=>
+    try {
+        const resultado = await solicitar(
+            `/citas/cliente/${usuario.id_usuario}`
+        );
 
-p.correo===usuario.correo &&
+        const citas = resultado.citas || [];
 
-p.producto===producto
+        tabla.innerHTML = "";
 
-);
+        if (citas.length === 0) {
+            tabla.innerHTML = `
+                <tr>
+                    <td colspan="4">No tienes citas registradas.</td>
+                </tr>
+            `;
+            return;
+        }
+
+        citas.forEach(cita => {
+            const fila = document.createElement("tr");
+
+            const datos = [
+                cita.servicio || "Servicio no disponible",
+                String(cita.fecha || "").slice(0, 10),
+                cita.hora || "",
+                cita.estado || "Pendiente"
+            ];
+
+            datos.forEach(valor => {
+                const celda = document.createElement("td");
+                celda.textContent = valor;
+                fila.appendChild(celda);
+            });
+
+            tabla.appendChild(fila);
+        });
+
+    } catch (error) {
+        console.error("Error al cargar el historial de citas:", error);
+
+        tabla.innerHTML = `
+            <tr>
+                <td colspan="4">No se pudo cargar el historial.</td>
+            </tr>
+        `;
+    }
+}
 
 
-if(existe){
+// ==========================================
+// INICIO
+// ==========================================
 
-existe.cantidad++;
+async function cargarInicio() {
+    const usuario = getUsuario();
 
-}else{
+    const totalServicios = document.getElementById("totalServicios");
+    const totalProductos = document.getElementById("totalProductos");
+    const proxima = document.getElementById("proximaCita");
 
-carrito.push({
+    if (!usuario) {
+        if (totalServicios) totalServicios.textContent = "—";
+        if (totalProductos) totalProductos.textContent = "—";
+        if (proxima) proxima.textContent = "Inicia sesión para consultar";
+        return;
+    }
 
-correo:usuario.correo,
+    try {
+        const resultado = await solicitar(
+            `/citas/cliente/${usuario.id_usuario}`
+        );
 
-producto:producto,
+        const citas = resultado.citas || [];
+        const activas = citas.filter(cita =>
+            cita.estado !== "Cancelada"
+        );
 
-precio:precio,
+        if (totalServicios) {
+            totalServicios.textContent = activas.length;
+        }
 
-cantidad:1
+        const comprasResultado = await solicitar(
+            `/ventas/cliente/${usuario.id_usuario}`
+        );
 
+        const compras = comprasResultado.compras || [];
+
+        if (totalProductos) {
+            totalProductos.textContent = compras.reduce(
+                (total, compra) => total + Number(compra.cantidad || 0),
+                0
+            );
+        }
+
+        if (proxima) {
+            const futuras = activas
+                .filter(cita =>
+                    ["Pendiente", "Reprogramada"].includes(cita.estado)
+                )
+                .sort((a, b) =>
+                    new Date(`${a.fecha}T${a.hora}`) -
+                    new Date(`${b.fecha}T${b.hora}`)
+                );
+
+            proxima.textContent = futuras.length
+                ? `${String(futuras[0].fecha).slice(0, 10)} · ${String(futuras[0].hora).slice(0, 5)}`
+                : "Sin citas próximas";
+        }
+
+    } catch (error) {
+        console.error("Error cargando inicio:", error);
+    }
+}
+
+// ==========================================
+// INICIALIZACIÓN
+// ==========================================
+
+document.addEventListener("DOMContentLoaded", async () => {
+    if (!protegerPaginaPrivada()) return;
+
+    if (document.getElementById("formPerfil")) {
+        await cargarPerfil();
+    }
+
+    if (
+        document.getElementById("totalServicios") ||
+        document.getElementById("totalProductos") ||
+        document.getElementById("proximaCita")
+    ) {
+        await cargarInicio();
+    }
+
+    if (document.getElementById("listaCitas")) {
+        await mostrarCitas();
+    }
+
+    if (document.getElementById("listaHistorial")) {
+        await mostrarHistorial();
+    }
+
+    if (document.getElementById("listaCarrito")) {
+        mostrarCarrito();
+    }
+
+    if (document.getElementById("listaCompras")) {
+        await mostrarCompras();
+    }
+
+    if (document.getElementById("contenedorProductos")) {
+        await cargarProductos();
+    }
+
+    if (document.getElementById("contenedorServicios")) {
+        await cargarServicios();
+    }
 });
-
-}
-
-
-localStorage.setItem("carrito",JSON.stringify(carrito));
-
-alert("Producto agregado al carrito.");
-
-mostrarCarrito();
-
-}
-
-
-
-// ======================================
-// MOSTRAR CARRITO
-// ======================================
-
-function mostrarCarrito(){
-
-let tabla=document.getElementById("listaCarrito");
-
-if(!tabla)return;
-
-let usuario=getUsuario();
-
-if(!usuario)return;
-
-let carrito=JSON.parse(localStorage.getItem("carrito"))||[];
-
-let mis=carrito.filter(
-
-p=>p.correo===usuario.correo
-
-);
-
-tabla.innerHTML="";
-
-let total=0;
-
-
-if(mis.length===0){
-
-tabla.innerHTML=`
-
-<tr>
-
-<td colspan="3">
-
-El carrito está vacío
-
-</td>
-
-</tr>
-
-`;
-
-let t=document.getElementById("totalCarrito");
-
-if(t)t.innerHTML="$0";
-
-return;
-
-}
-
-
-mis.forEach(p=>{
-
-let subtotal=p.precio*p.cantidad;
-
-total+=subtotal;
-
-tabla.innerHTML+=`
-
-<tr>
-
-<td>
-
-${p.producto}
-
-<br>
-
-Cantidad: ${p.cantidad}
-
-</td>
-
-<td>
-
-$${subtotal}
-
-</td>
-
-<td>
-
-<button onclick="aumentar('${p.producto}')">+</button>
-
-<button onclick="disminuir('${p.producto}')">-</button>
-
-<button onclick="eliminarItem('${p.producto}')">🗑</button>
-
-</td>
-
-</tr>
-
-`;
-
-});
-
-
-let t=document.getElementById("totalCarrito");
-
-if(t){
-
-t.innerHTML= total.toLocaleString("es-CO");
-
-}
-
-}
-
-
-
-// ======================================
-// AUMENTAR
-// ======================================
-
-function aumentar(producto){
-
-let usuario=getUsuario();
-
-let carrito=JSON.parse(localStorage.getItem("carrito"))||[];
-
-carrito.forEach(p=>{
-
-if(
-
-p.correo===usuario.correo &&
-
-p.producto===producto
-
-){
-
-p.cantidad++;
-
-}
-
-});
-
-localStorage.setItem("carrito",JSON.stringify(carrito));
-
-mostrarCarrito();
-
-}
-
-
-
-// ======================================
-// DISMINUIR
-// ======================================
-
-function disminuir(producto){
-
-let usuario=getUsuario();
-
-let carrito=JSON.parse(localStorage.getItem("carrito"))||[];
-
-carrito.forEach(p=>{
-
-if(
-
-p.correo===usuario.correo &&
-
-p.producto===producto
-
-){
-
-p.cantidad--;
-
-}
-
-});
-
-
-carrito=carrito.filter(
-
-p=>p.cantidad>0
-
-);
-
-
-localStorage.setItem("carrito",JSON.stringify(carrito));
-
-mostrarCarrito();
-
-}
-
-
-
-// ======================================
-// ELIMINAR PRODUCTO
-// ======================================
-
-function eliminarItem(producto){
-
-let usuario=getUsuario();
-
-let carrito=JSON.parse(localStorage.getItem("carrito"))||[];
-
-carrito=carrito.filter(
-
-p=>
-
-!(
-
-p.correo===usuario.correo &&
-
-p.producto===producto
-
-)
-
-);
-
-localStorage.setItem("carrito",JSON.stringify(carrito));
-
-mostrarCarrito();
-
-}
-
-
-
-// ======================================
-// VACIAR CARRITO
-// ======================================
-
-function vaciarCarrito(){
-
-let usuario=getUsuario();
-
-let carrito=JSON.parse(localStorage.getItem("carrito"))||[];
-
-carrito=carrito.filter(
-
-p=>p.correo!==usuario.correo
-
-);
-
-localStorage.setItem("carrito",JSON.stringify(carrito));
-
-mostrarCarrito();
-
-alert("Carrito vaciado.");
-
-}
-
-
-
-// ======================================
-// FINALIZAR COMPRA
-// ======================================
-
-function finalizarCompra(){
-
-let usuario = getUsuario();
-
-if(!usuario)return;
-
-let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-
-let compras = JSON.parse(localStorage.getItem("compras")) || [];
-
-// NUEVO
-let ventas = JSON.parse(localStorage.getItem("ventas")) || [];
-
-let mis = carrito.filter(
-p => p.correo === usuario.correo
-);
-
-if(mis.length === 0){
-
-alert("El carrito está vacío.");
-
-return;
-
-}
-
-mis.forEach(p=>{
-
-// =====================
-// GUARDAR COMPRA
-// =====================
-
-compras.push({
-
-correo: usuario.correo,
-
-producto: p.producto,
-
-precio: p.precio,
-
-cantidad: p.cantidad,
-
-fecha: new Date().toLocaleDateString()
-
-});
-
-// =====================
-// GUARDAR TAMBIÉN COMO VENTA
-// =====================
-
-ventas.push({
-
-cliente: usuario.correo,
-
-producto: p.producto,
-
-cantidad: p.cantidad,
-
-precio: p.precio * p.cantidad,
-
-pago: "Compra Cliente",
-
-fecha: new Date().toLocaleDateString()
-
-});
-
-});
-
-// Guardar compras
-localStorage.setItem(
-"compras",
-JSON.stringify(compras)
-);
-
-// Guardar ventas
-localStorage.setItem(
-"ventas",
-JSON.stringify(ventas)
-);
-
-// Vaciar carrito
-carrito = carrito.filter(
-p => p.correo !== usuario.correo
-);
-
-localStorage.setItem(
-"carrito",
-JSON.stringify(carrito)
-);
-
-alert("Compra realizada correctamente.");
-
-mostrarCarrito();
-
-mostrarCompras();
-
-cargarInicio();
-
-}
-
-
-
-// ======================================
-// MOSTRAR COMPRAS
-// ======================================
-
-function mostrarCompras(){
-
-let tabla=document.getElementById("listaCompras");
-
-if(!tabla)return;
-
-let usuario=getUsuario();
-
-if(!usuario)return;
-
-let compras=JSON.parse(localStorage.getItem("compras"))||[];
-
-let mis=compras.filter(
-
-c=>c.correo===usuario.correo
-
-);
-
-tabla.innerHTML="";
-
-
-if(mis.length===0){
-
-tabla.innerHTML=`
-
-<tr>
-
-<td colspan="4">
-
-No hay compras registradas
-
-</td>
-
-</tr>
-
-`;
-
-return;
-
-}
-
-
-mis.forEach(c=>{
-
-tabla.innerHTML+=`
-
-<tr>
-
-<td>${c.producto}</td>
-
-<td>${c.cantidad}</td>
-
-<td>$${c.precio}</td>
-
-<td>${c.fecha}</td>
-
-</tr>
-
-`;
-
-});
-
-}
-
-
-
-// ======================================
-// CARGA GENERAL
-// ======================================
-
-document.addEventListener(
-
-"DOMContentLoaded",
-
-function(){
-
-cargarPerfil();
-
-cargarInicio();
-
-mostrarCitas();
-
-mostrarHistorial();
-
-mostrarCarrito();
-
-mostrarCompras();
-
-}
-
-);

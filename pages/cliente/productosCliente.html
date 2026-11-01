@@ -1,117 +1,462 @@
+
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos y ofertas | Glow Curl</title>
 
-<title>Productos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        :root {
+            --rosa-principal: #FFC0CB;
+            --rosa-suave: #FFE4E8;
+            --rosa-fondo: #FFF5F7;
+            --dorado-glow: #D4AF37;
+            --dorado-rose: #C59B72;
+            --texto-oscuro: #4A3B32;
+            --texto-suave: #7A685D;
+            --blanco-puro: #FFFFFF;
+            --borde-delicado: #FCE1E6;
+            --sombre-tarjeta: 0 15px 35px rgba(212, 175, 55, 0.08);
+            --sombre-hover: 0 20px 40px rgba(229, 130, 150, 0.18);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--rosa-fondo);
+            color: var(--texto-oscuro);
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.5px;
+        }
+
+        /* MENÚ LATERAL */
+
+        .sidebar {
+            width: 270px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid var(--borde-delicado);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.02);
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--borde-delicado);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-logo-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--dorado-glow);
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .sidebar-logo-texto {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--texto-oscuro);
+            text-transform: uppercase;
+        }
+
+        .sidebar-logo-texto span {
+            color: var(--dorado-glow);
+            font-style: italic;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: var(--texto-suave);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 9px 14px;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .sidebar a:hover,
+        .sidebar a[aria-current="page"] {
+            background: var(--rosa-suave);
+            color: var(--texto-oscuro);
+            font-weight: 600;
+        }
+
+        .sidebar a[aria-current="page"] {
+            border-left: 3px solid var(--dorado-glow);
+        }
+
+        /* CONTENIDO */
+
+        .contenido {
+            width: calc(100% - 270px);
+            margin-left: 270px;
+            padding: 40px 50px;
+            min-width: 0;
+        }
+
+        .encabezado {
+            margin-bottom: 35px;
+            background: linear-gradient(135deg, #FFF0F3 0%, #FCE1E6 100%);
+            padding: 30px 40px;
+            border-radius: 24px;
+            border: 1px solid var(--borde-delicado);
+        }
+
+        .encabezado-titulo-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .encabezado-logo {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: 2px solid var(--dorado-glow);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+            object-fit: cover;
+        }
+
+        .encabezado h1 {
+            font-size: clamp(30px, 3.5vw, 42px);
+            margin: 0;
+            color: var(--texto-oscuro);
+        }
+
+        .encabezado p {
+            color: var(--texto-suave);
+            line-height: 1.7;
+            margin-top: 10px;
+            font-size: 15.5px;
+            font-weight: 300;
+            max-width: 800px;
+        }
+
+        .aviso-publico {
+            margin-top: 12px;
+            color: var(--dorado-rose);
+            font-size: 13.5px;
+            font-weight: 500;
+        }
+
+        /* PRODUCTOS CARGADOS DESDE MYSQL */
+
+        .tarjetas {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 28px;
+        }
+
+        .producto-card {
+            background: var(--blanco-puro);
+            border: 1px solid var(--borde-delicado);
+            border-radius: 24px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: var(--sombre-tarjeta);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .producto-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--rosa-principal), var(--dorado-glow));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .producto-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--sombre-hover);
+        }
+
+        .producto-card:hover::before {
+            opacity: 1;
+        }
+
+        /* La imagen es creada directamente por clientes.js */
+
+        .producto-imagen {
+            width: 100%;
+            height: 200px;
+            display: block;
+            object-fit: contain;
+            padding: 15px;
+            background: linear-gradient(135deg, #FFF5F7, #FDE2E8);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border: 1px solid var(--borde-delicado);
+        }
+
+        .producto-card h2,
+        .producto-card h3 {
+            font-size: 22px;
+            margin: 0 0 8px;
+            color: var(--texto-oscuro);
+        }
+
+        .descripcion {
+            color: var(--texto-suave);
+            line-height: 1.6;
+            min-height: 48px;
+            margin: 0 0 16px;
+            font-size: 14px;
+            font-weight: 300;
+        }
+
+        .precio {
+            color: var(--dorado-rose);
+            font-size: 26px;
+            font-weight: 700;
+            font-family: 'Cormorant Garamond', serif;
+            margin: 0 0 20px;
+        }
+
+        .producto-card button {
+            width: 100%;
+            margin-top: auto;
+            padding: 14px;
+            background: linear-gradient(135deg, #E58296, #C9687D);
+            color: var(--blanco-puro);
+            border: none;
+            border-radius: 30px;
+            font-size: 14.5px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(201, 104, 125, 0.25);
+        }
+
+        .producto-card button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(201, 104, 125, 0.4);
+            background: linear-gradient(135deg, #C9687D, #E58296);
+        }
+
+        .producto-card button:disabled {
+            background: #C9BFC1;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        /* MENSAJES */
+
+        .mensaje-catalogo {
+            grid-column: 1 / -1;
+            background: white;
+            border: 1px solid var(--borde-delicado);
+            border-radius: 18px;
+            padding: 30px;
+            text-align: center;
+            color: var(--texto-suave);
+        }
+
+        /* ENLACES INFERIORES */
+
+        .enlaces-inferiores {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .enlaces-inferiores a {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 22px;
+            background: var(--blanco-puro);
+            color: var(--texto-oscuro);
+            border: 1px solid var(--borde-delicado);
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: var(--sombre-tarjeta);
+        }
+
+        .enlaces-inferiores a:hover {
+            background: var(--rosa-suave);
+            border-color: var(--dorado-glow);
+            transform: translateY(-2px);
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1200px) {
+            .tarjetas {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 850px) {
+            .sidebar {
+                display: none;
+            }
+
+            .contenido {
+                width: 100%;
+                margin-left: 0;
+                padding: 85px 20px 30px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .tarjetas {
+                grid-template-columns: 1fr;
+            }
+
+            .encabezado {
+                padding: 25px 20px;
+            }
+
+            .encabezado-titulo-box {
+                align-items: flex-start;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- MENU -->
-<button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <button
+        class="menu-toggle"
+        type="button"
+        onclick="toggleMenu()"
+        aria-label="Abrir menú"
+        aria-controls="sidebar">
+        ☰
+    </button>
 
-<div class="overlay" onclick="cerrarMenu()"></div>
+    <div class="overlay" onclick="cerrarMenu()"></div>
 
-<div class="sidebar" id="sidebar">
+    <nav class="sidebar" id="sidebar">
 
-<h2>Glow Curl</h2>
+        <div class="sidebar-header">
+            <img
+                src="../../img/logo.png"
+                alt="Logo Glow Curl"
+                class="sidebar-logo-img"
+                onerror="this.src='../../img/logo.png'; this.onerror=null;">
 
-<ul>
-<li><a href="inicioCliente.html">🏠 Inicio</a></li>
-<li><a href="serviciosCliente.html">💇 Servicios</a></li>
-<li><a href="productosCliente.html">🧴 Productos</a></li>
-<li><a href="carritoCliente.html">🛒 Carrito</a></li>
-<li><a href="comprasCliente.html">🛍 Mis compras</a></li>
-<li><a href="citasCliente.html">📅 Mis citas</a></li>
-<li><a href="perfilCliente.html">👤 Mi perfil</a></li>
+            <div class="sidebar-logo-texto">
+                Glow <span>Curl</span>
+            </div>
+        </div>
 
-<li>
-<a href="#" onclick="cerrarSesion()">🚪 Salir</a>
-</li>
+        <ul>
+            <li><a href="inicioCliente.html">Inicio</a></li>
+            <li><a href="serviciosCliente.html">Servicios</a></li>
+            <li><a href="productosCliente.html" aria-current="page">Productos y ofertas</a></li>
+            <li><a href="acercaCliente.html">Sobre nosotros</a></li>
+            <li><a href="carritoCliente.html">Carrito</a></li>
+            <li><a href="citasCliente.html">Mis citas</a></li>
+            <li><a href="perfilCliente.html">Mi perfil</a></li>
+            <li><a href="comprasCliente.html">Mis compras</a></li>
+            <li><a href="historialCliente.html">Historial</a></li>
+            <li><a href="../auth/loginCliente.html">Iniciar sesión</a></li>
+            <li><a href="../auth/registroCliente.html">Crear cuenta</a></li>
+        </ul>
 
-</ul>
+    </nav>
 
-</div>
+    <main class="contenido">
 
-<!-- CONTENIDO -->
-<div class="contenido">
+        <header class="encabezado">
 
-<h1>🧴 Productos</h1>
+            <div class="encabezado-titulo-box">
 
-<div class="tarjetas">
+                <img
+                    src="../../img/logo.png"
+                    alt="Logo Glow Curl Spa"
+                    class="encabezado-logo"
+                    onerror="this.src='../../img/logo.png'; this.onerror=null;">
 
-<!-- PRODUCTO 1 -->
-<div class="card">
+                <h1>Nuestros productos y ofertas</h1>
 
-<img src="../../img/shampoo.png" width="150">
+            </div>
 
-<h3>Shampoo Curl</h3>
-<p>Limpieza profunda para rizos</p>
-<h2>$35.000</h2>
+            <p>
+                Encuentra productos profesionales para cuidar, hidratar y definir
+                tu cabello ondulado, rizado o afro.
+            </p>
 
-<button onclick="agregarCarrito('Shampoo Curl',35000)">
-Agregar al carrito
-</button>
+            <p class="aviso-publico">
+                Puedes explorar el catálogo y agregar productos al carrito
+                sin iniciar sesión. Para finalizar tu compra necesitarás
+                ingresar a tu cuenta.
+            </p>
 
-</div>
+        </header>
 
-<!-- PRODUCTO 2 -->
-<div class="card">
+        <!-- Los productos se cargan desde la base de datos MySQL -->
 
-<img src="../../img/crema.png" width="150">
+        <section
+            class="tarjetas"
+            id="contenedorProductos"
+            aria-label="Catálogo de productos">
 
-<h3>Crema Definidora</h3>
-<p>Control del frizz</p>
-<h2>$42.000</h2>
+            <p class="mensaje-catalogo">
+                Cargando productos...
+            </p>
 
-<button onclick="agregarCarrito('Crema Definidora',42000)">
-Agregar al carrito
-</button>
+        </section>
 
-</div>
+        <div class="enlaces-inferiores">
+            <a href="carritoCliente.html">Ver mi carrito</a>
+            <a href="serviciosCliente.html">Conocer los servicios</a>
+            <a href="inicioCliente.html">Volver al inicio</a>
+        </div>
 
-<!-- PRODUCTO 3 -->
-<div class="card">
+    </main>
 
-<img src="../../img/aceite.png" width="150">
-
-<h3>Aceite Natural</h3>
-<p>Brillo y nutrición</p>
-<h2>$30.000</h2>
-
-<button onclick="agregarCarrito('Aceite Natural',30000)">
-Agregar al carrito
-</button>
-
-</div>
-
-<!-- PRODUCTO 4 -->
-<div class="card">
-
-<img src="../../img/mascarilla.png" width="150">
-
-<h3>Mascarilla Hidratante</h3>
-<p>Hidratación profunda</p>
-<h2>$48.000</h2>
-
-<button onclick="agregarCarrito('Mascarilla Hidratante',48000)">
-Agregar al carrito
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<script src="../../js/menu.js"></script>
-<script src="../../js/clientes.js"></script>
+    <script src="../../js/menu.js"></script>
+    <script src="../../js/clientes.js"></script>
 
 </body>
-
 </html>

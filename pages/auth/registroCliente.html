@@ -2,122 +2,252 @@
 <html lang="es">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear cuenta | Glow Curl</title>
 
-<meta charset="UTF-8">
+    <!-- Fuentes elegantes Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../css/style.css">
 
-<title>Registro Cliente</title>
+    <style>
+        :root {
+            --rosa-principal: #FFC0CB;
+            --rosa-suave: #FFE4E8;
+            --rosa-fondo: #FFF5F7;
+            --dorado-glow: #D4AF37;
+            --dorado-rose: #C59B72;
+            --texto-oscuro: #4A3B32;
+            --texto-suave: #7A685D;
+            --blanco-puro: #FFFFFF;
+            --borde-delicado: #FCE1E6;
+            --sombre-tarjeta: 0 15px 35px rgba(212, 175, 55, 0.08);
+        }
 
-<link rel="stylesheet"
-href="../../css/style.css">
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
 
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 40px 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--rosa-fondo);
+            color: var(--texto-oscuro);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- LOGO DE FONDO GRANDE Y SEMITRANSPARENTE (MARCA DE AGUA) --- */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: min(90vw, 650px);
+            height: min(90vw, 650px);
+            background-image: url('../../img/logo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.15; /* Transparencia muy elegante */
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .registro-box {
+            width: 100%;
+            max-width: 480px;
+            padding: 45px 40px;
+            background: rgba(255, 255, 255, 0.90);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--borde-delicado);
+            border-radius: 28px;
+            box-shadow: 0 20px 50px rgba(229, 130, 150, 0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .registro-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--rosa-principal), var(--dorado-glow));
+        }
+
+        .registro-logo-img {
+            display: block;
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--dorado-glow);
+            box-shadow: 0 6px 15px rgba(212, 175, 55, 0.25);
+            margin: 0 auto 15px;
+        }
+
+        h1 {
+            margin: 0 0 6px;
+            text-align: center;
+            color: var(--texto-oscuro);
+            font-size: 36px;
+        }
+
+        .descripcion {
+            margin-bottom: 28px;
+            text-align: center;
+            color: var(--texto-suave);
+            font-size: 14.5px;
+            font-weight: 300;
+        }
+
+        label {
+            display: block;
+            margin: 14px 0 6px;
+            font-weight: 600;
+            font-size: 13.5px;
+            color: var(--texto-oscuro);
+            letter-spacing: 0.3px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1px solid var(--borde-delicado);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--texto-oscuro);
+            font-size: 14.5px;
+            font-family: inherit;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--dorado-glow);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+            background: #FFF;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #E58296, #C9687D);
+            color: var(--blanco-puro);
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(201, 104, 125, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(201, 104, 125, 0.4);
+            background: linear-gradient(135deg, #C9687D, #E58296);
+        }
+
+        .volver, .login {
+            display: block;
+            margin-top: 18px;
+            text-align: center;
+            color: var(--dorado-rose);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .login {
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1px solid var(--borde-delicado);
+        }
+
+        .login:hover, .volver:hover {
+            color: var(--texto-oscuro);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .registro-box {
+                padding: 32px 22px;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <main class="registro-box">
+        <img src="../../img/logo.png" alt="Logo Glow Curl" class="registro-logo-img" onerror="this.src='../../img/logo.png'; this.onerror=null;">
 
-<div class="login-container">
+        <h1>Crear cuenta</h1>
+        <p class="descripcion">Únete a Glow Curl y descubre el cuidado de tu cabello. ✨</p>
 
-<div class="login-box">
+        <form onsubmit="registrarCliente(); return false;">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre"
+                   autocomplete="given-name" required>
 
-<h1>
+            <label for="apellido">Apellido</label>
+            <input type="text" id="apellido" name="apellido"
+                   autocomplete="family-name" required>
 
-Glow Curl App
+            <label for="correo">Correo electrónico</label>
+            <input type="email" id="correo" name="correo"
+                   autocomplete="email" required>
 
-</h1>
+            <label for="telefono">Teléfono</label>
+            <input type="tel" id="telefono" name="telefono"
+                   autocomplete="tel" required>
 
-<p>
+            <label for="cabello">Tipo de cabello</label>
+            <select id="cabello" name="cabello" required>
+                <option value="">Selecciona una opción</option>
+                <option value="ondulado">Ondulado</option>
+                <option value="rizo">Rizo</option>
+                <option value="afro">Afro</option>
+            </select>
 
-Crear cuenta
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="password"
+                   autocomplete="new-password" required>
 
-</p>
+            <label for="confirmar">Confirmar contraseña</label>
+            <input type="password" id="confirmar" name="confirmar"
+                   autocomplete="new-password" required>
 
-<input
-type="text"
-id="nombre"
-placeholder="Nombre">
+            <button type="submit">Registrarme</button>
+        </form>
 
-<input
-type="text"
-id="apellido"
-placeholder="Apellido">
+        <a class="login" href="loginCliente.html">
+            ¿Ya tienes cuenta? Inicia sesión
+        </a>
 
-<input
-type="email"
-id="correo"
-placeholder="Correo">
+        <a class="volver" href="../../index.html">
+            ← Volver al inicio
+        </a>
+    </main>
 
-<input
-type="text"
-id="telefono"
-placeholder="Teléfono">
-
-<select id="cabello">
-
-<option value="">
-
-Tipo de cabello
-
-</option>
-
-<option>
-
-Ondulado
-
-</option>
-
-<option>
-
-Rizado
-
-</option>
-
-<option>
-
-Afro
-
-</option>
-
-</select>
-
-<input
-type="password"
-id="password"
-placeholder="Contraseña">
-
-<input
-type="password"
-id="confirmar"
-placeholder="Confirmar contraseña">
-
-<button
-onclick="registrarCliente()">
-
-Registrarse
-
-</button>
-
-<br><br>
-
-<p>
-
-¿Ya tienes cuenta?
-
-<a href="loginCliente.html">
-
-Iniciar sesión
-
-</a>
-
-</p>
-
-</div>
-
-</div>
-
-<script src="../../js/clientes.js"></script>
-
+    <script src="../../js/clientes.js"></script>
 </body>
-
 </html>

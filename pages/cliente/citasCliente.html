@@ -1,124 +1,474 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis citas | Glow Curl</title>
 
-<meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/style.css">
 
-<title>Mis citas</title>
+    <style>
+        :root {
+            --rosa-principal: #FFC0CB;
+            --rosa-suave: #FFE4E8;
+            --rosa-fondo: #FFF5F7;
+            --dorado-glow: #D4AF37;
+            --dorado-rose: #C59B72;
+            --texto-oscuro: #4A3B32;
+            --texto-suave: #7A685D;
+            --blanco-puro: #FFFFFF;
+            --borde-delicado: #FCE1E6;
+            --sombre-tarjeta: 0 15px 35px rgba(212, 175, 55, 0.08);
+        }
 
-<link rel="stylesheet"
-href="../../css/style.css">
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
 
+        body {
+            background: var(--rosa-fondo);
+            color: var(--texto-oscuro);
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar {
+            width: 270px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid var(--borde-delicado);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.02);
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--borde-delicado);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-logo-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--dorado-glow);
+        }
+
+        .sidebar-logo-texto {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--texto-oscuro);
+            text-transform: uppercase;
+        }
+
+        .sidebar-logo-texto span {
+            color: var(--dorado-glow);
+            font-style: italic;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: var(--texto-suave);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 9px 14px;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .sidebar a:hover,
+        .sidebar a[aria-current="page"] {
+            background: var(--rosa-suave);
+            color: var(--texto-oscuro);
+            font-weight: 600;
+        }
+
+        .sidebar a[aria-current="page"] {
+            border-left: 3px solid var(--dorado-glow);
+        }
+
+        .contenido {
+            width: calc(100% - 270px);
+            margin-left: 270px;
+            padding: 40px 50px;
+            min-width: 0;
+        }
+
+        .encabezado {
+            margin-bottom: 35px;
+            background: linear-gradient(135deg, #FFF0F3 0%, #FCE1E6 100%);
+            padding: 30px 40px;
+            border-radius: 24px;
+            border: 1px solid var(--borde-delicado);
+        }
+
+        .encabezado-titulo-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .encabezado-logo {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: 2px solid var(--dorado-glow);
+            object-fit: cover;
+        }
+
+        .encabezado h1 {
+            color: var(--texto-oscuro);
+            font-size: clamp(30px, 3.5vw, 42px);
+            margin: 0;
+        }
+
+        .encabezado p {
+            color: var(--texto-suave);
+            line-height: 1.7;
+            margin-top: 10px;
+            font-size: 15.5px;
+            max-width: 800px;
+        }
+
+        .resumen {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+
+        .resumen-card {
+            background: var(--blanco-puro);
+            padding: 28px;
+            border: 1px solid var(--borde-delicado);
+            border-radius: 24px;
+            box-shadow: var(--sombre-tarjeta);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resumen-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--rosa-principal), var(--dorado-glow));
+        }
+
+        .resumen-card p {
+            color: var(--texto-suave);
+            margin: 0 0 10px;
+            font-size: 14.5px;
+            font-weight: 500;
+        }
+
+        .resumen-card strong {
+            color: var(--dorado-rose);
+            font-size: 32px;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .seccion-tabla h2 {
+            font-size: 26px;
+            color: var(--texto-oscuro);
+            margin-bottom: 15px;
+        }
+
+        .tabla-container {
+            width: 100%;
+            overflow-x: auto;
+            background: var(--blanco-puro);
+            border-radius: 24px;
+            border: 1px solid var(--borde-delicado);
+            box-shadow: var(--sombre-tarjeta);
+        }
+
+        table {
+            width: 100%;
+            min-width: 680px;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: linear-gradient(135deg, #FFF0F3, #FCE1E6);
+            color: var(--texto-oscuro);
+            text-align: left;
+            padding: 18px 20px;
+            font-weight: 600;
+            font-size: 14.5px;
+            border-bottom: 1px solid var(--borde-delicado);
+        }
+
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--borde-delicado);
+            color: var(--texto-oscuro);
+            font-size: 14px;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: var(--rosa-fondo);
+        }
+
+        td button {
+            margin: 3px;
+            padding: 9px 14px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #E58296, #C9687D);
+            color: var(--blanco-puro);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        td button:hover {
+            transform: translateY(-2px);
+        }
+
+        .nota {
+            margin-top: 35px;
+            padding: 22px 28px;
+            border-radius: 20px;
+            background: var(--blanco-puro);
+            border: 1px solid var(--borde-delicado);
+            color: var(--texto-suave);
+            line-height: 1.7;
+            font-size: 14px;
+            box-shadow: var(--sombre-tarjeta);
+        }
+
+        .nota strong {
+            color: var(--texto-oscuro);
+        }
+
+        @media (max-width: 850px) {
+            .sidebar {
+                display: none;
+            }
+
+            .contenido {
+                width: 100%;
+                margin-left: 0;
+                padding: 85px 20px 30px;
+            }
+        }
+
+        @media (max-width: 580px) {
+            .resumen {
+                grid-template-columns: 1fr;
+            }
+
+            .encabezado {
+                padding: 25px 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- BOTÓN MENÚ -->
+    <button class="menu-toggle"
+            type="button"
+            onclick="toggleMenu()"
+            aria-label="Abrir menú"
+            aria-controls="sidebar">
+        ☰
+    </button>
 
-<button class="menu-toggle"
-onclick="toggleMenu()">
+    <div class="overlay" onclick="cerrarMenu()"></div>
 
-☰
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="../../img/logo.png"
+                 alt="Logo Glow Curl"
+                 class="sidebar-logo-img"
+                 onerror="this.src='../../img/logo.png'; this.onerror=null;">
 
-</button>
+            <div class="sidebar-logo-texto">Glow <span>Curl</span></div>
+        </div>
 
-<!-- OVERLAY -->
+        <ul>
+            <li><a href="inicioCliente.html">Inicio</a></li>
+            <li><a href="serviciosCliente.html">Servicios</a></li>
+            <li><a href="productosCliente.html">Productos</a></li>
+            <li><a href="citasCliente.html" aria-current="page">Mis citas</a></li>
+            <li><a href="perfilCliente.html">Mi perfil</a></li>
+            <li><a href="carritoCliente.html">Carrito</a></li>
+            <li><a href="comprasCliente.html">Mis compras</a></li>
+            <li><a href="historialCliente.html">Historial</a></li>
+            <li><a href="acercaCliente.html">Sobre nosotros</a></li>
+            <li><a href="#" onclick="cerrarSesion(); return false;">Cerrar sesión</a></li>
+        </ul>
+    </nav>
 
-<div class="overlay"
-onclick="cerrarMenu()">
+    <main class="contenido">
 
-</div>
+        <header class="encabezado">
+            <div class="encabezado-titulo-box">
+                <img src="../../img/logo.png"
+                     alt="Logo Glow Curl Spa"
+                     class="encabezado-logo"
+                     onerror="this.src='../../img/logo.png'; this.onerror=null;">
 
-<!-- SIDEBAR -->
+                <h1>Mis citas</h1>
+            </div>
 
-<div class="sidebar"
-id="sidebar">
+            <p>
+                Consulta tus reservas, revisa sus estados y administra
+                las citas de tus tratamientos capilares.
+            </p>
+        </header>
 
-<h2>
+        <section class="resumen">
+            <div class="resumen-card">
+                <p>Citas activas</p>
+                <strong id="totalCitas">0</strong>
+            </div>
 
-Glow Curl
+            <div class="resumen-card">
+                <p>Próxima cita</p>
+                <strong id="fechaProxima" style="font-size:22px;">
+                    Sin citas
+                </strong>
+            </div>
+        </section>
 
-</h2>
+        <section class="seccion-tabla">
+            <h2>Reservas registradas</h2>
 
-<ul>
+            <div class="tabla-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Servicio</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
 
-<li><a href="inicioCliente.html">🏠 Inicio</a></li>
+                    <tbody id="listaCitas">
+                        <tr>
+                            <td colspan="5"
+                                style="text-align:center; padding:35px;">
+                                Cargando citas...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-<li><a href="serviciosCliente.html">💇 Servicios</a></li>
+        <aside class="nota">
+            <strong>¿Necesitas cambiar tus planes?</strong><br>
+            Puedes cancelar una reserva desde la columna de acciones.
+            Revisa los datos antes de confirmar el cambio.
+        </aside>
 
-<li><a href="productosCliente.html">🧴 Productos</a></li>
+    </main>
 
-<li><a href="citasCliente.html">📅 Mis citas</a></li>
+    <script src="../../js/menu.js"></script>
+    <script src="../../js/clientes.js"></script>
 
-<li><a href="perfilCliente.html">👤 Mi Perfil</a></li>
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            const usuario = getUsuario();
 
-<li><a href="acercaCliente.html">ℹ Nosotros</a></li>
-<li><a href="carritoCliente.html">🛒 Carrito</a></li>
-<li><a href="comprasCliente.html">🛍 Mis compras</a></li>
-<li>
+            if (!usuario || !usuario.id_usuario) {
+                window.location.href = "../auth/loginCliente.html";
+                return;
+            }
 
-<a href="#"
-onclick="cerrarSesion()">
+            const totalCitas = document.getElementById("totalCitas");
+            const fechaProxima = document.getElementById("fechaProxima");
 
-🚪 Salir
+            try {
+                const resultado = await solicitar(
+                    `/citas/cliente/${usuario.id_usuario}`
+                );
 
-</a>
+                const citas = resultado.citas || [];
 
-</li>
+                const activas = citas.filter(cita =>
+                    cita.estado !== "Cancelada"
+                );
 
-</ul>
+                totalCitas.textContent = activas.length;
 
-</div>
+                const ahora = new Date();
 
+                const futuras = activas
+                    .filter(cita => {
+                        const fechaHora = new Date(
+                            `${String(cita.fecha).slice(0, 10)}T${String(cita.hora).slice(0, 5)}`
+                        );
 
-<!-- CONTENIDO -->
+                        return fechaHora >= ahora &&
+                            ["Pendiente", "Reprogramada"].includes(cita.estado);
+                    })
+                    .sort((a, b) => {
+                        const fechaA = new Date(
+                            `${String(a.fecha).slice(0, 10)}T${String(a.hora).slice(0, 5)}`
+                        );
 
-<div class="contenido">
+                        const fechaB = new Date(
+                            `${String(b.fecha).slice(0, 10)}T${String(b.hora).slice(0, 5)}`
+                        );
 
-<h1>
+                        return fechaA - fechaB;
+                    });
 
-📅 Mis citas
+                fechaProxima.textContent = futuras.length
+                    ? String(futuras[0].fecha).slice(0, 10)
+                    : "Sin citas";
 
-</h1>
-
-<div class="tabla-container">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>Servicio</th>
-
-<th>Fecha</th>
-
-<th>Hora</th>
-
-<th>Estado</th>
-
-</tr>
-
-</thead>
-
-<tbody id="listaCitas">
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-<script src="../../js/menu.js"></script>
-
-<script src="../../js/clientes.js"></script>
+            } catch (error) {
+                console.error("Error al cargar el resumen:", error);
+                totalCitas.textContent = "—";
+                fechaProxima.textContent = "No disponible";
+            }
+        });
+    </script>
 
 </body>
-
 </html>

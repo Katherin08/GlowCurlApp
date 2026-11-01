@@ -2,44 +2,639 @@
 <html lang="es">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glow Curl App | Tu cabello, tu esencia</title>
+    <meta name="description"
+        content="Descubre productos, servicios y consejos para el cuidado del cabello ondulado, rizado y afro con Glow Curl App.">
 
-<title>Glow Curl App</title>
+    <!-- Fuentes elegantes Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 
+    <style>
+        :root {
+            --rosa-spa-principal: #FFC0CB;
+            --rosa-suave: #FFE4E8;
+            --rosa-fondo: #FFF5F7;
+            --dorado-glow: #D4AF37;
+            --dorado-rose: #C59B72;
+            --texto-oscuro: #4A3B32;
+            --texto-suave: #7A685D;
+            --blanco-puro: #FFFFFF;
+            --sombre-spa: 0 10px 30px rgba(229, 152, 172, 0.15);
+            --sombre-tarjeta: 0 15px 35px rgba(212, 175, 55, 0.08);
+            --borde-delicado: #FCE1E6;
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 20px;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--rosa-fondo);
+            color: var(--texto-oscuro);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.5px;
+        }
+
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* --- BARRA DE NAVEGACIÓN SPA --- */
+        .barra {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 12px 7%;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--borde-delicado);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+
+        .logo-contenedor {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+            border: 2px solid var(--dorado-glow);
+        }
+
+        .logo-texto {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--texto-oscuro);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .logo-texto span {
+            color: var(--dorado-glow);
+            font-style: italic;
+        }
+
+        .navegacion {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .navegacion a {
+            text-decoration: none;
+            color: var(--texto-suave);
+            font-weight: 500;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .navegacion a:hover {
+            color: var(--texto-oscuro);
+            background: var(--rosa-suave);
+        }
+
+        .navegacion .registro {
+            background: linear-gradient(135deg, #FFA0B4, #E58296);
+            color: var(--blanco-puro) !important;
+            box-shadow: 0 4px 15px rgba(229, 130, 150, 0.3);
+            font-weight: 600;
+        }
+
+        .navegacion .registro:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(229, 130, 150, 0.45);
+            background: linear-gradient(135deg, #E58296, #FFA0B4);
+        }
+
+        /* --- PORTADA / HERO --- */
+        .portada {
+            min-height: 560px;
+            padding: 80px 8%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            background: radial-gradient(circle at 80% 20%, #FFF0F3 0%, #FDE2E8 50%, #FFF5F7 100%);
+            position: relative;
+        }
+
+        .portada::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(to top, var(--rosa-fondo), transparent);
+        }
+
+        .portada-texto {
+            max-width: 620px;
+            z-index: 2;
+        }
+
+        .etiqueta {
+            display: inline-block;
+            background: #FFF;
+            padding: 6px 16px;
+            border-radius: 30px;
+            color: var(--dorado-rose);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            border: 1px solid var(--borde-delicado);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .portada h1 {
+            font-size: clamp(42px, 5.5vw, 68px);
+            line-height: 1.05;
+            margin: 22px 0;
+            color: var(--texto-oscuro);
+            font-weight: 600;
+        }
+
+        .portada p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--texto-suave);
+            font-weight: 300;
+        }
+
+        .acciones {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .boton {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .boton-principal {
+            background: linear-gradient(135deg, #E58296, #C9687D);
+            color: var(--blanco-puro);
+            box-shadow: 0 8px 25px rgba(201, 104, 125, 0.35);
+        }
+
+        .boton-principal:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(201, 104, 125, 0.48);
+        }
+
+        .boton-secundario {
+            border: 1.5px solid var(--dorado-rose);
+            color: var(--texto-oscuro);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .boton-secundario:hover {
+            background: var(--blanco-puro);
+            border-color: var(--dorado-glow);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.15);
+        }
+
+        /* Insignia con el Logo Oficial */
+        .portada-decoracion-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+
+        .portada-decoracion {
+            flex: 0 0 320px;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 50px rgba(229, 130, 150, 0.25);
+            border: 4px solid #FFF;
+            outline: 1px solid var(--borde-delicado);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portada-decoracion img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* --- SECCIÓN PRINCIPAL DE CARACTERÍSTICAS --- */
+        .seccion {
+            padding: 80px 8%;
+            text-align: center;
+        }
+
+        .seccion h2 {
+            font-size: 42px;
+            margin: 0 0 16px;
+            color: var(--texto-oscuro);
+        }
+
+        .introduccion {
+            max-width: 680px;
+            margin: 0 auto 50px;
+            color: var(--texto-suave);
+            line-height: 1.8;
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        .caracteristicas {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 28px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .caracteristica {
+            background: var(--blanco-puro);
+            border: 1px solid var(--borde-delicado);
+            border-radius: 24px;
+            padding: 32px 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            box-shadow: var(--sombre-tarjeta);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .caracteristica::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--rosa-spa-principal), var(--dorado-glow));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .caracteristica:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(229, 130, 150, 0.18);
+        }
+
+        .caracteristica:hover::before {
+            opacity: 1;
+        }
+
+        .caracteristica h3 {
+            color: var(--texto-oscuro);
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+
+        .caracteristica p {
+            line-height: 1.7;
+            color: var(--texto-suave);
+            font-size: 14.5px;
+            flex-grow: 1;
+            font-weight: 300;
+        }
+
+        .enlace-seccion {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 18px;
+            color: var(--dorado-rose);
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            letter-spacing: 0.3px;
+        }
+
+        .enlace-seccion:hover {
+            color: var(--texto-oscuro);
+        }
+
+        /* --- LLAMADA A LA ACCIÓN (CTA) --- */
+        .llamada {
+            margin: 20px 8% 80px;
+            padding: 60px 40px;
+            background: linear-gradient(135deg, #FFF0F3 0%, #FCE1E6 100%);
+            border-radius: 32px;
+            text-align: center;
+            border: 1px solid var(--borde-delicado);
+            box-shadow: 0 15px 35px rgba(229, 130, 150, 0.12);
+        }
+
+        .llamada h2 {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .llamada p {
+            line-height: 1.7;
+            color: var(--texto-suave);
+            max-width: 550px;
+            margin: 0 auto 28px;
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        footer {
+            text-align: center;
+            padding: 35px;
+            background: var(--blanco-puro);
+            color: var(--texto-suave);
+            font-size: 14px;
+            border-top: 1px solid var(--borde-delicado);
+            letter-spacing: 0.5px;
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 992px) {
+            .caracteristicas {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .portada-decoracion {
+                width: 250px;
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .barra {
+                padding: 14px 5%;
+            }
+
+            .portada {
+                flex-direction: column-reverse;
+                text-align: center;
+                padding: 40px 6% 60px;
+            }
+
+            .portada-texto {
+                max-width: 100%;
+            }
+
+            .acciones {
+                justify-content: center;
+            }
+
+            .caracteristicas {
+                grid-template-columns: 1fr;
+            }
+
+            .portada-decoracion {
+                width: 200px;
+                height: 200px;
+            }
+
+            .seccion h2 {
+                font-size: 32px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="contenedorInicio">
+    <header class="barra">
+        <a class="logo-contenedor" href="index.html">
+            <img src="img/logo.png" alt="Logo Glow Curl App" class="logo-img" onerror="this.src='img/logo.png'; this.onerror=null;">
+            <span class="logo-texto">Glow <span>Curl</span></span>
+        </a>
 
-<h1>Glow Curl App</h1>
+        <nav class="navegacion" aria-label="Navegación principal">
+            <a href="pages/cliente/productosCliente.html">Productos</a>
+            <a href="pages/cliente/serviciosCliente.html">Servicios</a>
+            <a href="pages/cliente/acercaCliente.html">Nosotros</a>
+            <a href="pages/auth/loginCliente.html">Ingresar</a>
+            <a class="registro" href="pages/auth/registroCliente.html">
+                Crear cuenta
+            </a>
+        </nav>
+    </header>
 
-<p>
-Bienvenido a Glow Curl App
-</p>
+    <main>
 
-<div class="opcionesInicio">
+        <section class="portada">
+            <div class="portada-texto">
 
-<a href="pages/auth/loginCliente.html">
-<button class="btnPrincipal">
-👤 Ingresar como Cliente
-</button>
-</a>
+                <span class="etiqueta">
+                    ✨ Cuidado capilar para tu belleza natural
+                </span>
 
-<a href="pages/auth/loginEmpresa.html">
-<button class="btnPrincipal">
-🏢 Ingresar como Empresa
-</button>
-</a>
+                <h1>Tu cabello, tu esencia.</h1>
 
-</div>
+                <p>
+                    En Glow Curl encontrarás un espacio dedicado al cuidado
+                    del cabello ondulado, rizado y afro. Descubre productos,
+                    servicios y consejos para crear una rutina que se adapte
+                    a las necesidades de tu cabello.
+                </p>
 
-</div>
+                <div class="acciones">
+                    <a class="boton boton-principal"
+                       href="pages/cliente/productosCliente.html">
+                        Explorar productos
+                    </a>
+
+                    <a class="boton boton-secundario"
+                       href="pages/auth/registroCliente.html">
+                        Crear mi cuenta
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="portada-decoracion-wrapper">
+                <div class="portada-decoracion" aria-label="Logo Glow Curl">
+                    <img src="img/logo.png" alt="Glow Curl Spa Logo" onerror="this.src='img/logo.png'; this.onerror=null;">
+                </div>
+            </div>
+        </section>
+
+        <section class="seccion" id="nosotros">
+
+            <h2>Todo para cuidar tus rizos</h2>
+
+            <p class="introduccion">
+                Queremos ayudarte a conocer mejor tu cabello y encontrar
+                alternativas para cuidarlo de manera constante.
+                Explora nuestras secciones y descubre todo lo que
+                Glow Curl tiene para ti.
+            </p>
+
+            <div class="caracteristicas">
+
+                <article class="caracteristica">
+                    <h3>Tu perfil capilar</h3>
+
+                    <p>
+                        Registra las características de tu cabello,
+                        identifica tus necesidades y define tus objetivos
+                        de cuidado.
+                    </p>
+
+                    <a class="enlace-seccion"
+                       href="pages/auth/registroCliente.html">
+                        Crear perfil &rarr;
+                    </a>
+                </article>
+
+                <article class="caracteristica">
+                    <h3>Productos y ofertas</h3>
+
+                    <p>
+                        Explora el catálogo, consulta los productos
+                        disponibles y conoce las ofertas publicadas.
+                        Puedes agregar productos al carrito antes de iniciar
+                        sesión.
+                    </p>
+
+                    <a class="enlace-seccion"
+                       href="pages/cliente/productosCliente.html">
+                        Ver productos &rarr;
+                    </a>
+                </article>
+
+                <article class="caracteristica">
+                    <h3>Servicios capilares</h3>
+
+                    <p>
+                        Consulta los servicios disponibles y encuentra
+                        opciones para el cuidado de tu cabello.
+                        Para reservar una cita, deberás iniciar sesión.
+                    </p>
+
+                    <a class="enlace-seccion"
+                       href="pages/cliente/serviciosCliente.html">
+                        Ver servicios &rarr;
+                    </a>
+                </article>
+
+                <article class="caracteristica">
+                    <h3>Carrito de compras</h3>
+
+                    <p>
+                        Revisa los productos seleccionados, modifica
+                        las cantidades y consulta el total de tu pedido.
+                    </p>
+
+                    <a class="enlace-seccion"
+                       href="pages/cliente/carritoCliente.html">
+                        Ir al carrito &rarr;
+                    </a>
+                </article>
+
+                <article class="caracteristica">
+                    <h3>Tus citas</h3>
+
+                    <p>
+                        Después de iniciar sesión, podrás consultar tus
+                        citas, revisar sus horarios y gestionar tus reservas.
+                    </p>
+
+                    <a class="enlace-seccion"
+                       href="pages/cliente/citasCliente.html">
+                        Consultar mis citas &rarr;
+                    </a>
+                </article>
+
+                <article class="caracteristica">
+                    <h3>Sobre Glow Curl</h3>
+
+                    <p>
+                        Conoce nuestra propuesta, nuestros objetivos
+                        y el compromiso con el cuidado del cabello
+                        ondulado, rizado y afro.
+                    </p>
+
+                    <a class="enlace-seccion"
+                       href="pages/cliente/acercaCliente.html">
+                        Conocer más &rarr;
+                    </a>
+                </article>
+
+            </div>
+        </section>
+
+        <section class="llamada">
+            <h2>Empieza a cuidar tu cabello</h2>
+
+            <p>
+                Explora Glow Curl libremente o crea tu cuenta para
+                reservar citas y gestionar tus compras.
+            </p>
+
+            <div class="acciones" style="justify-content: center;">
+                <a class="boton boton-principal"
+                   href="pages/auth/registroCliente.html">
+                    Crear mi cuenta
+                </a>
+
+                <a class="boton boton-secundario"
+                   href="pages/auth/loginCliente.html">
+                    Iniciar sesión
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        Glow Curl App · Tu cabello, tu esencia. ✨
+    </footer>
 
 </body>
-
 </html>

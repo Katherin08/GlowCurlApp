@@ -2,102 +2,320 @@
 <html lang="es">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
+    <title>Ingresar | Glow Curl</title>
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+    <!-- Fuentes elegantes Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<title>Login Cliente</title>
+    <link rel="stylesheet" href="../../css/style.css">
 
-<link rel="stylesheet"
-href="../../css/style.css">
+    <style>
+        :root {
+            --rosa-principal: #FFC0CB;
+            --rosa-suave: #FFE4E8;
+            --rosa-fondo: #FFF5F7;
+            --dorado-glow: #D4AF37;
+            --dorado-rose: #C59B72;
+            --texto-oscuro: #4A3B32;
+            --texto-suave: #7A685D;
+            --blanco-puro: #FFFFFF;
+            --borde-delicado: #FCE1E6;
+            --sombre-tarjeta: 0 15px 35px rgba(212, 175, 55, 0.08);
+        }
 
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background: var(--rosa-fondo);
+            color: var(--texto-oscuro);
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- LOGO DE FONDO GRANDE Y VISIBLE --- */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: min(85vw, 600px);
+            height: min(85vw, 600px);
+            background-image: url('../../img/logo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.30; /* 30% de visibilidad para que se note muy bien en el fondo */
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .btn-inicio {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 25px 0 0 25px;
+            color: var(--texto-oscuro);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14.5px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--borde-delicado);
+            border-radius: 30px;
+            box-shadow: var(--sombre-tarjeta);
+            z-index: 2;
+            width: fit-content;
+        }
+
+        .btn-inicio:hover {
+            background: var(--rosa-suave);
+            border-color: var(--dorado-glow);
+            transform: translateY(-2px);
+        }
+
+        .login-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            z-index: 1;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.88); /* Transparencia ligera en la tarjeta para apreciar el fondo */
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--borde-delicado);
+            border-radius: 28px;
+            padding: 45px 40px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 20px 50px rgba(229, 130, 150, 0.2);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--rosa-principal), var(--dorado-glow));
+        }
+
+        .login-logo-img {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--dorado-glow);
+            box-shadow: 0 6px 15px rgba(212, 175, 55, 0.25);
+            margin-bottom: 12px;
+        }
+
+        .login-box h1 {
+            color: var(--texto-oscuro);
+            font-size: 36px;
+            margin: 0 0 8px;
+        }
+
+        .login-box p {
+            color: var(--texto-suave);
+            font-size: 14.5px;
+            line-height: 1.6;
+            margin: 4px 0;
+            font-weight: 300;
+        }
+
+        .login-box form {
+            margin-top: 25px;
+        }
+
+        .login-box input:not([type="checkbox"]) {
+            width: 100%;
+            box-sizing: border-box;
+            margin: 8px 0;
+            padding: 14px 18px;
+            border: 1px solid var(--borde-delicado);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--texto-oscuro);
+            font-size: 14.5px;
+            font-family: inherit;
+        }
+
+        .login-box input:not([type="checkbox"]):focus {
+            outline: none;
+            border-color: var(--dorado-glow);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+            background: #FFF;
+        }
+
+        .login-box .mostrar-pass {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 14px 0 22px;
+            font-size: 13.5px;
+            color: var(--texto-suave);
+            justify-content: flex-start;
+        }
+
+        .login-box .mostrar-pass input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--dorado-rose);
+            cursor: pointer;
+        }
+
+        .login-box button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 14px;
+            border: none;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-box button[type="submit"] {
+            background: linear-gradient(135deg, #E58296, #C9687D);
+            color: var(--blanco-puro);
+            box-shadow: 0 4px 15px rgba(201, 104, 125, 0.25);
+        }
+
+        .login-box button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(201, 104, 125, 0.4);
+            background: linear-gradient(135deg, #C9687D, #E58296);
+        }
+
+        .login-box button[type="button"] {
+            background: var(--blanco-puro);
+            color: var(--texto-oscuro);
+            border: 1px solid var(--borde-delicado);
+            margin-top: 12px;
+        }
+
+        .login-box button[type="button"]:hover {
+            background: var(--rosa-suave);
+            border-color: var(--dorado-glow);
+        }
+
+        .login-box a {
+            color: var(--dorado-rose);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .login-box a:hover {
+            color: var(--texto-oscuro);
+            text-decoration: underline;
+        }
+
+        .registro-link {
+            margin-top: 25px !important;
+            padding-top: 20px;
+            border-top: 1px solid var(--borde-delicado);
+        }
+
+        @media (max-width: 480px) {
+            .login-box {
+                padding: 32px 22px;
+            }
+
+            .btn-inicio {
+                margin: 15px 0 0 15px;
+            }
+        }
+    </style>
 </head>
 
 <body>
+
     <a href="../../index.html" class="btn-inicio">
-    🏠 Inicio
-</a>
+        ← Volver al inicio
+    </a>
 
-<div class="login-container">
+    <main class="login-container">
+        <div class="login-box">
 
-<div class="login-box">
+            <img src="../../img/logo.png" alt="Logo Glow Curl" class="login-logo-img" onerror="this.src='../../img/logo.png'; this.onerror=null;">
 
-<h1>
+            <h1>Glow Curl</h1>
 
-Glow Curl Cliente
+            <p>Nos alegra tenerte de vuelta. ✨</p>
+            <p>Inicia sesión para continuar con tu cuidado capilar.</p>
 
-</h1>
+            <form onsubmit="ingresarCliente(); return false;">
 
-<p>
+                <input
+                    type="email"
+                    id="usuarioCliente"
+                    placeholder="Correo electrónico"
+                    autocomplete="email"
+                    required
+                >
 
-Inicia sesión
+                <input
+                    type="password"
+                    id="passwordCliente"
+                    placeholder="Contraseña"
+                    autocomplete="current-password"
+                    required
+                >
 
-</p>
+                <div class="mostrar-pass">
+                    <input
+                        type="checkbox"
+                        id="mostrarPassword"
+                        onchange="mostrarPasswordCliente()"
+                    >
+                    <label for="mostrarPassword">Mostrar contraseña</label>
+                </div>
 
-<input
-type="email"
-id="usuarioCliente"
-placeholder="Correo">
+                <button type="submit">Iniciar sesión</button>
 
-<input
-type="password"
-id="passwordCliente"
-placeholder="Contraseña">
+                <button type="button" onclick="limpiarCliente()">
+                    Borrar
+                </button>
 
-<div class="mostrar-pass">
+            </form>
 
-<input
-type="checkbox"
-onclick="mostrarPasswordCliente()">
+            <p class="registro-link">
+                ¿Todavía no tienes una cuenta?
+                <a href="registroCliente.html">Crear cuenta</a>
+            </p>
 
-<label>
+        </div>
+    </main>
 
-Mostrar contraseña
-
-</label>
-
-</div>
-
-<button
-onclick="ingresarCliente()">
-
-Iniciar sesión
-
-</button>
-
-<button
-onclick="limpiarCliente()">
-
-Limpiar
-
-</button>
-
-<br><br>
-
-<p>
-
-¿No tienes cuenta?
-
-<a href="registroCliente.html">
-
-Registrarse
-
-</a>
-
-</p>
-
-</div>
-
-</div>
-
-<script src="../../js/clientes.js"></script>
-<script src="../../js/app.js"></script>
+    <script src="../../js/clientes.js"></script>
 
 </body>
-
 </html>
-<button class="btn-volver" onclick="window.location.href='../../index.html'">
-← Volver al inicio
-</button>

@@ -1,300 +1,774 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Descubre productos, servicios y consejos para cuidar tu cabello ondulado, rizado o afro.">
+    <title>Glow Curl | Inicio</title>
 
-<meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/style.css">
 
-<title>Inicio Cliente</title>
+    <style>
+        :root {
+            --rosa-principal: #FFC0CB;
+            --rosa-suave: #FFE4E8;
+            --rosa-fondo: #FFF5F7;
+            --dorado-glow: #D4AF37;
+            --dorado-rose: #C59B72;
+            --texto-oscuro: #4A3B32;
+            --texto-suave: #7A685D;
+            --blanco-puro: #FFFFFF;
+            --borde-delicado: #FCE1E6;
+            --sombre-tarjeta: 0 15px 35px rgba(212, 175, 55, 0.08);
+            --sombre-hover: 0 20px 40px rgba(229, 130, 150, 0.18);
+        }
 
-<link rel="stylesheet" href="../../css/style.css">
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
 
+        body {
+            margin: 0;
+            background: var(--rosa-fondo);
+            color: var(--texto-oscuro);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar {
+            width: 270px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid var(--borde-delicado);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.02);
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--borde-delicado);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-logo-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--dorado-glow);
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .sidebar-logo-texto {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--texto-oscuro);
+            text-transform: uppercase;
+        }
+
+        .sidebar-logo-texto span {
+            color: var(--dorado-glow);
+            font-style: italic;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: var(--texto-suave);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 9px 14px;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .sidebar a:hover,
+        .sidebar a[aria-current="page"] {
+            background: var(--rosa-suave);
+            color: var(--texto-oscuro);
+            font-weight: 600;
+        }
+
+        .sidebar a[aria-current="page"] {
+            border-left: 3px solid var(--dorado-glow);
+        }
+
+        .contenido {
+            box-sizing: border-box;
+            width: calc(100% - 270px);
+            margin-left: 270px;
+            padding: 40px 50px;
+            min-width: 0;
+        }
+
+        .bienvenida {
+            background: radial-gradient(circle at 80% 20%, #FFF0F3 0%, #FDE2E8 50%, #FFF5F7 100%);
+            border-radius: 32px;
+            padding: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            overflow: hidden;
+            border: 1px solid var(--borde-delicado);
+            box-shadow: var(--sombre-tarjeta);
+            position: relative;
+        }
+
+        .bienvenida-texto {
+            max-width: 650px;
+            z-index: 2;
+        }
+
+        .etiqueta {
+            display: inline-block;
+            background: var(--blanco-puro);
+            padding: 6px 16px;
+            border-radius: 30px;
+            color: var(--dorado-rose);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: 1px solid var(--borde-delicado);
+        }
+
+        .bienvenida h1 {
+            font-size: clamp(32px, 4.5vw, 52px);
+            line-height: 1.1;
+            margin: 18px 0;
+            color: var(--texto-oscuro);
+        }
+
+        .bienvenida p {
+            line-height: 1.8;
+            color: var(--texto-suave);
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        .botones-inicio {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 28px;
+        }
+
+        .boton-principal,
+        .boton-secundario {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .boton-principal {
+            background: linear-gradient(135deg, #E58296, #C9687D);
+            color: var(--blanco-puro);
+            box-shadow: 0 6px 20px rgba(201, 104, 125, 0.3);
+        }
+
+        .boton-principal:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(201, 104, 125, 0.45);
+            background: linear-gradient(135deg, #C9687D, #E58296);
+        }
+
+        .boton-secundario {
+            background: var(--blanco-puro);
+            color: var(--texto-oscuro);
+            border: 1.5px solid var(--dorado-rose);
+            box-shadow: var(--sombre-tarjeta);
+        }
+
+        .boton-secundario:hover {
+            background: var(--rosa-suave);
+            border-color: var(--dorado-glow);
+            transform: translateY(-3px);
+        }
+
+        .decoracion-logo {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: var(--blanco-puro);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 35px rgba(229, 130, 150, 0.2);
+            border: 4px solid var(--blanco-puro);
+            outline: 1px solid var(--borde-delicado);
+            flex-shrink: 0;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .decoracion-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .seccion {
+            margin-top: 50px;
+        }
+
+        .seccion h2 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            color: var(--texto-oscuro);
+        }
+
+        .descripcion {
+            color: var(--texto-suave);
+            margin-bottom: 28px;
+            line-height: 1.6;
+            font-size: 15px;
+            font-weight: 300;
+        }
+
+        .tarjetas {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 25px;
+        }
+
+        .tarjeta {
+            min-width: 0;
+            overflow-wrap: anywhere;
+            background: var(--blanco-puro);
+            border: 1px solid var(--borde-delicado);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: var(--sombre-tarjeta);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tarjeta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--rosa-principal), var(--dorado-glow));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tarjeta:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--sombre-hover);
+        }
+
+        .tarjeta:hover::before {
+            opacity: 1;
+        }
+
+        .icono {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            background: var(--rosa-suave);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dorado-rose);
+            font-size: 18px;
+            font-weight: 700;
+            border: 1px solid var(--borde-delicado);
+        }
+
+        .tarjeta h3 {
+            margin: 20px 0 10px;
+            color: var(--texto-oscuro);
+            font-size: 22px;
+        }
+
+        .tarjeta p {
+            color: var(--texto-suave);
+            line-height: 1.7;
+            font-size: 14px;
+            font-weight: 300;
+        }
+
+        .enlace {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--dorado-rose);
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            margin-top: 12px;
+        }
+
+        .enlace:hover {
+            color: var(--texto-oscuro);
+        }
+
+        .estadisticas {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .estadistica {
+            background: var(--blanco-puro);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid var(--borde-delicado);
+            box-shadow: var(--sombre-tarjeta);
+            min-width: 0;
+        }
+
+        .estadistica span {
+            display: block;
+            color: var(--texto-suave);
+            font-size: 13.5px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .estadistica strong {
+            font-size: 28px;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--dorado-rose);
+            overflow-wrap: anywhere;
+        }
+
+        .aviso {
+            background: var(--blanco-puro);
+            border: 1px solid var(--borde-delicado);
+            border-left: 4px solid var(--dorado-glow);
+            border-radius: 18px;
+            padding: 20px 24px;
+            color: var(--texto-suave);
+            line-height: 1.7;
+            margin-top: 25px;
+            font-size: 14.5px;
+            box-shadow: var(--sombre-tarjeta);
+        }
+
+        .acciones-cuenta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .pie {
+            text-align: center;
+            padding: 40px 10px 15px;
+            color: var(--texto-suave);
+            font-size: 13.5px;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 1100px) {
+            .tarjetas {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .bienvenida {
+                padding: 38px;
+            }
+
+            .decoracion-logo {
+                width: 170px;
+                height: 170px;
+            }
+        }
+
+        @media (max-width: 850px) {
+            .sidebar {
+                display: none;
+            }
+
+            .contenido {
+                width: 100%;
+                margin-left: 0;
+                padding: 85px 20px 25px;
+            }
+
+            .decoracion-logo {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .bienvenida {
+                padding: 28px 22px;
+            }
+
+            .tarjetas,
+            .estadisticas {
+                grid-template-columns: 1fr;
+            }
+
+            .seccion h2 {
+                font-size: 26px;
+            }
+
+            .botones-inicio {
+                flex-direction: column;
+            }
+
+            .botones-inicio a {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- BOTÓN MENÚ -->
-
-<button class="menu-toggle" onclick="toggleMenu()">
-
-☰
-
-</button>
-
-<!-- OVERLAY -->
-
-<div class="overlay" onclick="cerrarMenu()"></div>
-
-<!-- SIDEBAR -->
-
-<div class="sidebar" id="sidebar">
-
-<h2>Glow Curl</h2>
-
-<ul>
-
-<li><a href="inicioCliente.html">🏠 Inicio</a></li>
-
-<li><a href="serviciosCliente.html">💇 Servicios</a></li>
-
-<li><a href="productosCliente.html">🧴 Productos</a></li>
-
-<li><a href="carritoCliente.html">🛒 Carrito</a></li>
-
-<li><a href="comprasCliente.html">🛍 Mis compras</a></li>
-
-<li><a href="citasCliente.html">📅 Mis citas</a></li>
-
-<li><a href="historialCliente.html">📜 Historial</a></li>
-
-<li><a href="perfilCliente.html">👤 Mi perfil</a></li>
-
-<li><a href="acercaCliente.html">ℹ Nosotros</a></li>
-
-<li>
-
-<a href="#" onclick="cerrarSesion()">
-
-🚪 Cerrar sesión
-
-</a>
-
-</li>
-
-</ul>
-
-</div>
-
-<!-- CONTENIDO -->
-
-<div class="contenido">
-
-<h1>
-
-¡Bienvenido a Glow Curl!
-
-</h1>
-
-<p>
-
-Gestiona tus servicios, productos y citas desde un solo lugar.
-
-</p>
-
-<!-- TARJETAS -->
-
-<div class="tarjetas">
-
-<div class="card">
-
-<h3>
-
-💇 Servicios reservados
-
-</h3>
-
-<p id="totalServicios">
-
-0
-
-</p>
-
-</div>
-
-<div class="card">
-
-<h3>
-
-🧴 Productos comprados
-
-</h3>
-
-<p id="totalProductos">
-
-0
-
-</p>
-
-</div>
-
-<div class="card">
-
-<h3>
-
-📅 Próxima cita
-
-</h3>
-
-<p id="proximaCita">
-
-Sin citas
-
-</p>
-
-</div>
-
-</div>
-
-<br>
-
-<!-- ACCESOS RÁPIDOS -->
-
-<h2>
-
-Accesos rápidos
-
-</h2>
-
-<div class="tarjetas">
-
-<div class="card">
-
-<h3>
-
-💇 Reservar servicio
-
-</h3>
-
-<p>
-
-Agenda una nueva cita para cualquiera de nuestros servicios.
-
-</p>
-
-<button onclick="window.location.href='serviciosCliente.html'">
-
-Ir
-
-</button>
-
-</div>
-
-<div class="card">
-
-<h3>
-
-🧴 Comprar productos
-
-</h3>
-
-<p>
-
-Explora nuestro catálogo para el cuidado de tu cabello.
-
-</p>
-
-<button onclick="window.location.href='productosCliente.html'">
-
-Ir
-
-</button>
-
-</div>
-
-<div class="card">
-
-<h3>
-
-👤 Actualizar perfil
-
-</h3>
-
-<p>
-
-Mantén tu información siempre actualizada.
-
-</p>
-
-<button onclick="window.location.href='perfilCliente.html'">
-
-Ir
-
-</button>
-
-</div>
-
-</div>
-
-<br>
-
-<!-- RECOMENDACIONES -->
-
-<h2>
-
-Recomendaciones para ti
-
-</h2>
-
-<div class="tarjetas">
-
-<div class="card">
-
-<h3>
-
-💧 Hidratación profunda
-
-</h3>
-
-<p>
-
-Ideal para cabellos secos y con rizos.
-
-</p>
-
-</div>
-
-<div class="card">
-
-<h3>
-
-✨ Crema Definidora
-
-</h3>
-
-<p>
-
-Ayuda a definir los rizos durante todo el día.
-
-</p>
-
-</div>
-
-<div class="card">
-
-<h3>
-
-🌿 Aceite Natural
-
-</h3>
-
-<p>
-
-Nutre y aporta brillo al cabello.
-
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-<script src="../../js/menu.js"></script>
-
-<script src="../../js/clientes.js"></script>
-
-<script>
-
-document.addEventListener("DOMContentLoaded", function(){
-
-cargarInicio();
-
-});
-
-</script>
+    <button
+        class="menu-toggle"
+        type="button"
+        onclick="toggleMenu()"
+        aria-label="Abrir menú"
+        aria-controls="sidebar">
+        ☰
+    </button>
+
+    <div class="overlay" onclick="cerrarMenu()"></div>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="../../img/logo.png" alt="Logo Glow Curl" class="sidebar-logo-img"
+                 onerror="this.src='../../img/logo.png'; this.onerror=null;">
+            <div class="sidebar-logo-texto">Glow <span>Curl</span></div>
+        </div>
+
+        <ul>
+            <li><a href="inicioCliente.html" aria-current="page">Inicio</a></li>
+            <li><a href="productosCliente.html">Productos y ofertas</a></li>
+            <li><a href="serviciosCliente.html">Servicios</a></li>
+            <li><a href="acercaCliente.html">Sobre nosotros</a></li>
+
+            <li id="opcionLogin"><a href="../auth/loginCliente.html">Iniciar sesión</a></li>
+            <li id="opcionRegistro"><a href="../auth/registroCliente.html">Crear cuenta</a></li>
+
+            <li><a href="perfilCliente.html">Mi perfil capilar</a></li>
+            <li><a href="citasCliente.html">Mis citas</a></li>
+            <li><a href="carritoCliente.html">Carrito</a></li>
+            <li><a href="comprasCliente.html">Mis compras</a></li>
+            <li><a href="historialCliente.html">Historial</a></li>
+        </ul>
+    </nav>
+
+    <main class="contenido">
+
+        <section class="bienvenida">
+            <div class="bienvenida-texto">
+                <span class="etiqueta">Tu belleza natural comienza aquí</span>
+
+                <h1>Cuida tus rizos, resalta tu esencia.</h1>
+
+                <p>
+                    Descubre productos, rutinas y servicios pensados
+                    para el cuidado de tu cabello ondulado, rizado o afro.
+                    Explora Glow Curl y encuentra opciones para tu rutina capilar.
+                </p>
+
+                <div class="botones-inicio">
+                    <a class="boton-principal" href="productosCliente.html">
+                        Explorar productos
+                    </a>
+
+                    <a class="boton-secundario" href="serviciosCliente.html">
+                        Conocer servicios
+                    </a>
+                </div>
+            </div>
+
+            <div class="decoracion-logo" aria-hidden="true">
+                <img src="../../img/logo.png" alt="Logo Glow Curl"
+                     onerror="this.src='../../img/logo.png'; this.onerror=null;">
+            </div>
+        </section>
+
+        <section class="seccion">
+            <h2>Explora Glow Curl</h2>
+
+            <p class="descripcion">
+                Consulta nuestros productos y servicios sin necesidad
+                de crear una cuenta.
+            </p>
+
+            <div class="tarjetas">
+
+                <article class="tarjeta">
+                    <div class="icono" aria-hidden="true">01</div>
+                    <h3>Productos y ofertas</h3>
+                    <p>
+                        Encuentra opciones para hidratar, nutrir y definir
+                        tu cabello según tus necesidades.
+                    </p>
+                    <a class="enlace" href="productosCliente.html">
+                        Explorar catálogo &rarr;
+                    </a>
+                </article>
+
+                <article class="tarjeta">
+                    <div class="icono" aria-hidden="true">02</div>
+                    <h3>Servicios capilares</h3>
+                    <p>
+                        Conoce los servicios disponibles, sus características
+                        y sus precios.
+                    </p>
+                    <a class="enlace" href="serviciosCliente.html">
+                        Ver servicios &rarr;
+                    </a>
+                </article>
+
+                <article class="tarjeta">
+                    <div class="icono" aria-hidden="true">03</div>
+                    <h3>Sobre nosotros</h3>
+                    <p>
+                        Aprende más sobre Glow Curl y nuestra propuesta
+                        de cuidado para cabello ondulado, rizado y afro.
+                    </p>
+                    <a class="enlace" href="acercaCliente.html">
+                        Conocer Glow Curl &rarr;
+                    </a>
+                </article>
+
+                <article class="tarjeta">
+                    <div class="icono" aria-hidden="true">04</div>
+                    <h3>Hidratación</h3>
+                    <p>
+                        Explora opciones de cuidado que ayudan a mantener
+                        el cabello suave y manejable.
+                    </p>
+                    <a class="enlace" href="productosCliente.html">
+                        Buscar productos &rarr;
+                    </a>
+                </article>
+
+                <article class="tarjeta">
+                    <div class="icono" aria-hidden="true">05</div>
+                    <h3>Definición</h3>
+                    <p>
+                        Descubre alternativas de cuidado y peinado para
+                        acompañar la forma natural de tus rizos.
+                    </p>
+                    <a class="enlace" href="productosCliente.html">
+                        Ver opciones &rarr;
+                    </a>
+                </article>
+
+                <article class="tarjeta">
+                    <div class="icono" aria-hidden="true">06</div>
+                    <h3>Nutrición</h3>
+                    <p>
+                        Encuentra opciones para complementar tu rutina
+                        de cuidado capilar.
+                    </p>
+                    <a class="enlace" href="productosCliente.html">
+                        Explorar catálogo &rarr;
+                    </a>
+                </article>
+
+            </div>
+        </section>
+
+        <section class="seccion">
+            <h2>Gestiona tu experiencia</h2>
+
+            <p class="descripcion">
+                Puedes explorar el sitio libremente. Para guardar tus citas,
+                compras y datos personales, ingresa a tu cuenta.
+            </p>
+
+            <div class="tarjetas">
+
+                <article class="tarjeta">
+                    <div class="icono" aria-hidden="true">C</div>
+                    <h3>Mis citas</h3>
+                    <p>
+                        Reserva nuevos servicios o consulta las citas
+                        que tienes registradas en tu cuenta.
+                    </p>
+                    <a class="enlace enlace-cuenta"
+                       data-destino="citasCliente.html"
+                       href="../auth/loginCliente.html?volver=../cliente/citasCliente.html">
+                        Ver mis citas &rarr;
+                    </a>
+                </article>
+
+                <article class="tarjeta">
+                    <div class="icono" aria-hidden="true">P</div>
+                    <h3>Mi perfil capilar</h3>
+                    <p>
+                        Guarda información sobre tu cabello y consulta
+                        tus preferencias personales.
+                    </p>
+                    <a class="enlace enlace-cuenta"
+                       data-destino="perfilCliente.html"
+                       href="../auth/loginCliente.html?volver=../cliente/perfilCliente.html">
+                        Acceder a mi perfil &rarr;
+                    </a>
+                </article>
+
+                <article class="tarjeta">
+                    <div class="icono" aria-hidden="true">M</div>
+                    <h3>Mis compras</h3>
+                    <p>
+                        Consulta las compras registradas en tu cuenta
+                        y revisa tus productos adquiridos.
+                    </p>
+                    <a class="enlace enlace-cuenta"
+                       data-destino="comprasCliente.html"
+                       href="../auth/loginCliente.html?volver=../cliente/comprasCliente.html">
+                        Acceder a mis compras &rarr;
+                    </a>
+                </article>
+
+            </div>
+
+            <div class="acciones-cuenta" id="accionesCuenta">
+                <a class="boton-principal" href="../auth/loginCliente.html">
+                    Iniciar sesión
+                </a>
+
+                <a class="boton-secundario" href="../auth/registroCliente.html">
+                    Crear cuenta
+                </a>
+            </div>
+
+            <div class="aviso" id="avisoCuenta">
+                Puedes consultar las secciones públicas sin iniciar sesión.
+                Para reservar citas, finalizar compras o consultar tu información
+                personal, debes ingresar a tu cuenta.
+            </div>
+        </section>
+
+        <section class="seccion">
+            <h2>Tu actividad</h2>
+
+            <p class="descripcion">
+                Aquí puedes consultar el resumen de tu actividad cuando
+                hayas iniciado sesión.
+            </p>
+
+            <div class="estadisticas">
+                <div class="estadistica">
+                    <span>Servicios reservados</span>
+                    <strong id="totalServicios">0</strong>
+                </div>
+
+                <div class="estadistica">
+                    <span>Productos comprados</span>
+                    <strong id="totalProductos">0</strong>
+                </div>
+
+                <div class="estadistica">
+                    <span>Próxima cita</span>
+                    <strong id="proximaCita">Sin citas</strong>
+                </div>
+            </div>
+        </section>
+
+        <footer class="pie">
+            Glow Curl App · Tu cabello, tu esencia.
+        </footer>
+
+    </main>
+
+    <script src="../../js/menu.js"></script>
+    <script src="../../js/clientes.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const usuario = typeof getUsuario === "function"
+                ? getUsuario()
+                : null;
+
+            const enlacesCuenta = document.querySelectorAll(".enlace-cuenta");
+            const accionesCuenta = document.getElementById("accionesCuenta");
+            const avisoCuenta = document.getElementById("avisoCuenta");
+
+            enlacesCuenta.forEach(enlace => {
+                const destino = enlace.dataset.destino;
+
+                if (usuario && usuario.id_usuario) {
+                    enlace.href = destino;
+                } else {
+                    enlace.href =
+                        "../auth/loginCliente.html?volver=../cliente/" + destino;
+                }
+            });
+
+            const opcionLogin = document.getElementById("opcionLogin");
+            const opcionRegistro = document.getElementById("opcionRegistro");
+
+            if (usuario && usuario.id_usuario) {
+                if (opcionLogin) opcionLogin.style.display = "none";
+                if (opcionRegistro) opcionRegistro.style.display = "none";
+
+                if (accionesCuenta) {
+                    accionesCuenta.innerHTML = `
+                        <a class="boton-principal" href="citasCliente.html">
+                            Ver mis citas
+                        </a>
+
+                        <a class="boton-secundario" href="perfilCliente.html">
+                            Mi perfil
+                        </a>
+                    `;
+                }
+
+                if (avisoCuenta) {
+                    avisoCuenta.textContent =
+                        "Tu sesión está activa. Puedes consultar tus citas, " +
+                        "compras y perfil capilar desde esta página.";
+                }
+            }
+
+            if (typeof cargarInicio === "function") {
+                cargarInicio();
+            }
+        });
+    </script>
 
 </body>
-
 </html>

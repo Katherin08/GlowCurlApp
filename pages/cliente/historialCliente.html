@@ -1,66 +1,511 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Historial de Citas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="../../css/style.css">
+    <title>Historial de citas | Glow Curl</title>
+
+    <!-- Fuentes elegantes Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../css/style.css">
+
+    <style>
+        :root {
+            --rosa-principal: #FFC0CB;
+            --rosa-suave: #FFE4E8;
+            --rosa-fondo: #FFF5F7;
+            --dorado-glow: #D4AF37;
+            --dorado-rose: #C59B72;
+            --texto-oscuro: #4A3B32;
+            --texto-suave: #7A685D;
+            --blanco-puro: #FFFFFF;
+            --borde-delicado: #FCE1E6;
+            --sombre-tarjeta: 0 15px 35px rgba(212, 175, 55, 0.08);
+            --sombre-hover: 0 20px 40px rgba(229, 130, 150, 0.18);
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background: var(--rosa-fondo);
+            color: var(--texto-oscuro);
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- SIDEBAR SPA & LOGO --- */
+        .sidebar {
+            width: 270px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid var(--borde-delicado);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.02);
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--borde-delicado);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-logo-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--dorado-glow);
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .sidebar-logo-texto {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--texto-oscuro);
+            text-transform: uppercase;
+        }
+
+        .sidebar-logo-texto span {
+            color: var(--dorado-glow);
+            font-style: italic;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: var(--texto-suave);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 9px 14px;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .sidebar a:hover,
+        .sidebar a[aria-current="page"] {
+            background: var(--rosa-suave);
+            color: var(--texto-oscuro);
+            font-weight: 600;
+        }
+
+        .sidebar a[aria-current="page"] {
+            border-left: 3px solid var(--dorado-glow);
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        .contenido {
+            box-sizing: border-box;
+            width: calc(100% - 270px);
+            margin-left: 270px;
+            padding: 40px 50px;
+            min-width: 0;
+        }
+
+        .encabezado {
+            margin-bottom: 35px;
+            background: linear-gradient(135deg, #FFF0F3 0%, #FCE1E6 100%);
+            padding: 30px 40px;
+            border-radius: 24px;
+            border: 1px solid var(--borde-delicado);
+        }
+
+        .encabezado-titulo-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .encabezado-logo {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: 2px solid var(--dorado-glow);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+            object-fit: cover;
+        }
+
+        .encabezado h1 {
+            color: var(--texto-oscuro);
+            font-size: clamp(30px, 3.5vw, 42px);
+            margin: 0;
+        }
+
+        .encabezado p {
+            color: var(--texto-suave);
+            line-height: 1.7;
+            margin-top: 10px;
+            font-size: 15.5px;
+            font-weight: 300;
+            max-width: 800px;
+        }
+
+        /* --- RESUMEN TARJETAS --- */
+        .resumen {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+
+        .resumen-card {
+            background: var(--blanco-puro);
+            padding: 28px;
+            border: 1px solid var(--borde-delicado);
+            border-radius: 24px;
+            box-shadow: var(--sombre-tarjeta);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resumen-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--rosa-principal), var(--dorado-glow));
+        }
+
+        .resumen-card p {
+            margin: 0 0 10px;
+            color: var(--texto-suave);
+            font-size: 14.5px;
+            font-weight: 500;
+        }
+
+        .resumen-card strong {
+            color: var(--dorado-rose);
+            font-size: 32px;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* --- TABLA HISTORIAL --- */
+        .seccion-tabla h2 {
+            font-size: 26px;
+            color: var(--texto-oscuro);
+            margin-bottom: 15px;
+        }
+
+        .tabla-container {
+            width: 100%;
+            overflow-x: auto;
+            background: var(--blanco-puro);
+            border: 1px solid var(--borde-delicado);
+            border-radius: 24px;
+            box-shadow: var(--sombre-tarjeta);
+        }
+
+        table {
+            width: 100%;
+            min-width: 570px;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: linear-gradient(135deg, #FFF0F3, #FCE1E6);
+            color: var(--texto-oscuro);
+            padding: 18px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14.5px;
+            border-bottom: 1px solid var(--borde-delicado);
+        }
+
+        td {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--borde-delicado);
+            color: var(--texto-oscuro);
+            font-size: 14px;
+            font-weight: 300;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: var(--rosa-fondo);
+        }
+
+        .estado {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: var(--rosa-suave);
+            color: var(--dorado-rose);
+            font-size: 12.5px;
+            font-weight: 600;
+            border: 1px solid var(--borde-delicado);
+        }
+
+        .mensaje {
+            text-align: center;
+            padding: 35px;
+            color: var(--texto-suave);
+            font-style: italic;
+        }
+
+        .enlace-citas {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 35px;
+            padding: 14px 26px;
+            background: linear-gradient(135deg, #E58296, #C9687D);
+            color: var(--blanco-puro);
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14.5px;
+            box-shadow: 0 4px 15px rgba(201, 104, 125, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        .enlace-citas:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(201, 104, 125, 0.4);
+            background: linear-gradient(135deg, #C9687D, #E58296);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 850px) {
+            .sidebar {
+                display: none; /* Controlado por el JS de tu menú hamburguesa */
+            }
+
+            .contenido {
+                width: 100%;
+                margin-left: 0;
+                padding: 85px 20px 30px;
+            }
+        }
+
+        @media (max-width: 580px) {
+            .resumen {
+                grid-template-columns: 1fr;
+            }
+
+            .encabezado {
+                padding: 25px 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- BOTÓN MENÚ -->
-<button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <!-- Botón del menú -->
+    <button class="menu-toggle"
+            type="button"
+            onclick="toggleMenu()"
+            aria-label="Abrir menú"
+            aria-controls="sidebar">
+        ☰
+    </button>
 
-<div class="overlay" onclick="cerrarMenu()"></div>
+    <!-- Fondo del menú -->
+    <div class="overlay" onclick="cerrarMenu()"></div>
 
-<div class="sidebar" id="sidebar">
+    <!-- Menú lateral -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="../../img/logo.png" alt="Logo Glow Curl" class="sidebar-logo-img" onerror="this.src='../../img/logo.png'; this.onerror=null;">
+            <div class="sidebar-logo-texto">Glow <span>Curl</span></div>
+        </div>
 
-<h2>Glow Curl</h2>
+        <ul>
+            <li><a href="inicioCliente.html">Inicio</a></li>
+            <li><a href="serviciosCliente.html">Servicios</a></li>
+            <li><a href="productosCliente.html">Productos</a></li>
+            <li><a href="citasCliente.html">Mis citas</a></li>
+            <li><a href="historialCliente.html" aria-current="page">Historial</a></li>
+            <li><a href="perfilCliente.html">Mi perfil</a></li>
+            <li><a href="carritoCliente.html">Carrito</a></li>
+            <li><a href="comprasCliente.html">Mis compras</a></li>
+            <li><a href="acercaCliente.html">Sobre nosotros</a></li>
+            <li>
+                <a href="#" onclick="cerrarSesion(); return false;">
+                    Cerrar sesión
+                </a>
+            </li>
+        </ul>
+    </nav>
 
-<ul>
-<li><a href="inicioCliente.html">🏠 Inicio</a></li>
-<li><a href="serviciosCliente.html">💇 Servicios</a></li>
-<li><a href="productosCliente.html">🧴 Productos</a></li>
-<li><a href="citasCliente.html">📅 Mis citas</a></li>
-<li><a href="historialCliente.html">📜 Historial</a></li>
-<li><a href="perfilCliente.html">👤 Mi perfil</a></li>
+    <!-- Contenido principal -->
+    <main class="contenido">
 
-<li>
-<a href="#" onclick="cerrarSesion()">🚪 Salir</a>
-</li>
-</ul>
+        <header class="encabezado">
+            <div class="encabezado-titulo-box">
+                <img src="../../img/logo.png" alt="Logo Glow Curl Spa" class="encabezado-logo" onerror="this.src='../../img/logo.png'; this.onerror=null;">
+                <h1>Historial de citas</h1>
+            </div>
+            <p>
+                Consulta las citas anteriores y revisa el estado
+                de tus reservas en Glow Curl.
+            </p>
+        </header>
 
-</div>
+        <!-- Resumen -->
+        <section class="resumen">
+            <article class="resumen-card">
+                <p>Total de citas registradas</p>
+                <strong id="totalHistorial">0</strong>
+            </article>
 
-<div class="contenido">
+            <article class="resumen-card">
+                <p>Citas canceladas</p>
+                <strong id="totalCanceladas">0</strong>
+            </article>
+        </section>
 
-<h1>📜 Historial de citas</h1>
+        <!-- Tabla del historial -->
+        <section class="seccion-tabla">
+            <h2>Mis registros</h2>
 
-<div class="tabla-container">
+            <div class="tabla-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Servicio</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
 
-<table>
+                    <tbody id="listaHistorial">
+                        <tr>
+                            <td colspan="4" class="mensaje">
+                                Cargando historial...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-<thead>
-<tr>
-<th>Servicio</th>
-<th>Fecha</th>
-<th>Hora</th>
-<th>Estado</th>
-</tr>
-</thead>
+        <a href="citasCliente.html" class="enlace-citas">
+            📅 Consultar mis citas
+        </a>
 
-<tbody id="listaHistorial"></tbody>
+    </main>
 
-</table>
+    <script src="../../js/menu.js"></script>
+    <script src="../../js/clientes.js"></script>
 
-</div>
 
-</div>
+<script>
+    document.addEventListener("DOMContentLoaded", async function () {
+        if (typeof getUsuario !== "function") {
+            console.error("No se encontró la función getUsuario.");
+            return;
+        }
 
-<script src="../../js/clientes.js"></script>
+        const usuario = getUsuario();
 
+        if (!usuario) {
+            window.location.href = "../auth/loginCliente.html";
+            return;
+        }
+
+        const tabla = document.getElementById("listaHistorial");
+        const totalHistorial = document.getElementById("totalHistorial");
+        const totalCanceladas = document.getElementById("totalCanceladas");
+
+        try {
+            const resultado = await solicitar(
+                `/citas/cliente/${usuario.id_usuario}`
+            );
+
+            const citas = resultado.citas || [];
+
+            // Contar todas las citas registradas
+            totalHistorial.textContent = citas.length;
+
+            // Contar únicamente las citas canceladas
+            const canceladas = citas.filter(cita =>
+                String(cita.estado || "").trim().toLowerCase() === "cancelada"
+            );
+
+            totalCanceladas.textContent = canceladas.length;
+
+            // Mostrar las citas en la tabla
+            tabla.innerHTML = "";
+
+            if (citas.length === 0) {
+                tabla.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="mensaje">
+                            No tienes citas registradas.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            citas.forEach(cita => {
+                const fila = document.createElement("tr");
+
+                const datos = [
+                    cita.servicio || "Servicio no disponible",
+                    String(cita.fecha || "").slice(0, 10),
+                    cita.hora || "",
+                    cita.estado || "Pendiente"
+                ];
+
+                datos.forEach(valor => {
+                    const celda = document.createElement("td");
+                    celda.textContent = valor;
+                    fila.appendChild(celda);
+                });
+
+                tabla.appendChild(fila);
+            });
+
+        } catch (error) {
+            console.error("Error al cargar el historial:", error);
+
+            tabla.innerHTML = `
+                <tr>
+                    <td colspan="4" class="mensaje">
+                        No se pudo cargar el historial.
+                    </td>
+                </tr>
+            `;
+        }
+    });
+</script>
 </body>
 </html>

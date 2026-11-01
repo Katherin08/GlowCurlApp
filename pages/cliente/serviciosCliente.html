@@ -1,314 +1,558 @@
+
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios | Glow Curl</title>
 
-<meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/style.css">
 
-<title>Servicios</title>
+    <style>
+        :root {
+            --rosa-principal: #FFC0CB;
+            --rosa-suave: #FFE4E8;
+            --rosa-fondo: #FFF5F7;
+            --dorado-glow: #D4AF37;
+            --dorado-rose: #C59B72;
+            --texto-oscuro: #4A3B32;
+            --texto-suave: #7A685D;
+            --blanco-puro: #FFFFFF;
+            --borde-delicado: #FCE1E6;
+            --sombre-tarjeta: 0 15px 35px rgba(212, 175, 55, 0.08);
+            --sombre-hover: 0 20px 40px rgba(229, 130, 150, 0.18);
+        }
 
-<link rel="stylesheet" href="../../css/style.css">
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
 
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--rosa-fondo);
+            color: var(--texto-oscuro);
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', serif;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar {
+            width: 270px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid var(--borde-delicado);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.02);
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--borde-delicado);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-logo-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--dorado-glow);
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .sidebar-logo-texto {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--texto-oscuro);
+            text-transform: uppercase;
+        }
+
+        .sidebar-logo-texto span {
+            color: var(--dorado-glow);
+            font-style: italic;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: var(--texto-suave);
+            font-size: 14.5px;
+            font-weight: 500;
+            padding: 10px 16px;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .sidebar a:hover,
+        .sidebar a[aria-current="page"] {
+            background: var(--rosa-suave);
+            color: var(--texto-oscuro);
+            font-weight: 600;
+        }
+
+        .sidebar a[aria-current="page"] {
+            border-left: 3px solid var(--dorado-glow);
+        }
+
+        .contenido {
+            width: calc(100% - 270px);
+            margin-left: 270px;
+            padding: 40px 50px;
+            min-width: 0;
+        }
+
+        .encabezado {
+            margin-bottom: 35px;
+            background: linear-gradient(135deg, #FFF0F3 0%, #FCE1E6 100%);
+            padding: 30px 40px;
+            border-radius: 24px;
+            border: 1px solid var(--borde-delicado);
+            position: relative;
+        }
+
+        .encabezado-titulo-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .encabezado-logo {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: 2px solid var(--dorado-glow);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+        }
+
+        .encabezado h1 {
+            font-size: clamp(30px, 3.5vw, 42px);
+            margin: 0;
+            color: var(--texto-oscuro);
+        }
+
+        .encabezado p {
+            color: var(--texto-suave);
+            line-height: 1.7;
+            font-size: 15.5px;
+            margin-top: 10px;
+            max-width: 800px;
+            font-weight: 300;
+        }
+
+        .servicios-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 28px;
+        }
+
+        .servicio-card {
+            min-width: 0;
+            padding: 28px;
+            background: var(--blanco-puro);
+            border: 1px solid var(--borde-delicado);
+            border-radius: 24px;
+            box-shadow: var(--sombre-tarjeta);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .servicio-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--rosa-principal), var(--dorado-glow));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .servicio-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--sombre-hover);
+        }
+
+        .servicio-card:hover::before {
+            opacity: 1;
+        }
+
+        .servicio-card h2 {
+            font-size: 24px;
+            line-height: 1.2;
+            color: var(--texto-oscuro);
+            margin: 0;
+        }
+
+        .servicio-card p {
+            color: var(--texto-suave);
+            line-height: 1.6;
+            margin: 0;
+            font-size: 14px;
+            min-height: 45px;
+            font-weight: 300;
+        }
+
+        .precio {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--dorado-rose);
+            font-family: 'Cormorant Garamond', serif;
+            margin: 0;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .campo label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--texto-oscuro);
+            letter-spacing: 0.3px;
+        }
+
+        .campo input,
+        .campo select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--borde-delicado);
+            border-radius: 12px;
+            background: var(--rosa-fondo);
+            color: var(--texto-oscuro);
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .campo input:focus,
+        .campo select:focus {
+            outline: none;
+            border-color: var(--dorado-glow);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+            background: #FFF;
+        }
+
+        .btn-reservar {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #E58296, #C9687D);
+            color: var(--blanco-puro);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(201, 104, 125, 0.25);
+        }
+
+        .btn-reservar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(201, 104, 125, 0.4);
+            background: linear-gradient(135deg, #C9687D, #E58296);
+        }
+
+        .nota {
+            margin-top: 40px;
+            padding: 22px 28px;
+            border-radius: 20px;
+            background: #FFF;
+            border: 1px solid var(--borde-delicado);
+            color: var(--texto-suave);
+            line-height: 1.7;
+            font-size: 14px;
+            box-shadow: var(--sombre-tarjeta);
+        }
+
+        .nota strong {
+            color: var(--texto-oscuro);
+        }
+
+        .mensaje-servicios {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 30px;
+            background: white;
+            border: 1px solid var(--borde-delicado);
+            border-radius: 20px;
+            color: var(--texto-suave);
+        }
+
+        @media (max-width: 1200px) {
+            .servicios-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 850px) {
+            .sidebar {
+                display: none;
+            }
+
+            .contenido {
+                width: 100%;
+                margin-left: 0;
+                padding: 85px 20px 30px;
+            }
+        }
+
+        @media (max-width: 580px) {
+            .servicios-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .encabezado {
+                padding: 25px 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- BOTÓN MENÚ -->
-
-<button class="menu-toggle" onclick="toggleMenu()">
-
-☰
-
-</button>
-
-<!-- OVERLAY -->
-
-<div class="overlay" onclick="cerrarMenu()"></div>
-
-<!-- SIDEBAR -->
-
-<div class="sidebar" id="sidebar">
-
-<h2>Glow Curl</h2>
-
-<ul>
-
-<li><a href="inicioCliente.html">🏠 Inicio</a></li>
-
-<li><a href="serviciosCliente.html">💇 Servicios</a></li>
-
-<li><a href="productosCliente.html">🧴 Productos</a></li>
-
-<li><a href="carritoCliente.html">🛒 Carrito</a></li>
-
-<li><a href="comprasCliente.html">🛍 Mis compras</a></li>
-
-<li><a href="citasCliente.html">📅 Mis citas</a></li>
-
-<li><a href="historialCliente.html">📜 Historial</a></li>
-
-<li><a href="perfilCliente.html">👤 Mi perfil</a></li>
-
-<li><a href="acercaCliente.html">ℹ Nosotros</a></li>
-
-<li>
-
-<a href="#" onclick="cerrarSesion()">
-
-🚪 Salir
-
-</a>
-
-</li>
-
-</ul>
-
-</div>
-
-<!-- CONTENIDO -->
-
-<div class="contenido">
-
-<h1>
-
-💇 Nuestros Servicios
-
-</h1>
-
-<p>
-
-Selecciona el servicio que deseas reservar.
-
-</p>
-
-<div class="tarjetas">
-
-<!-- Servicio 1 -->
-
-<div class="card">
-
-<h3>✂ Corte para Rizos</h3>
-
-<p>Corte especializado para cabello rizado.</p>
-
-<h2>$40.000</h2>
-
-<input type="date" id="fecha1">
-
-<select id="hora1">
-
-<option value="">Hora</option>
-
-<option>08:00 AM</option>
-<option>09:00 AM</option>
-<option>10:00 AM</option>
-<option>11:00 AM</option>
-<option>02:00 PM</option>
-<option>03:00 PM</option>
-<option>04:00 PM</option>
-
-</select>
-
-<br><br>
-
-<button onclick="reservar('Corte para Rizos','fecha1','hora1')">
-
-Reservar
-
-</button>
-
-</div>
-
-<!-- Servicio 2 -->
-
-<div class="card">
-
-<h3>💧 Hidratación</h3>
-
-<p>Tratamiento profundo para rizos.</p>
-
-<h2>$55.000</h2>
-
-<input type="date" id="fecha2">
-
-<select id="hora2">
-
-<option value="">Hora</option>
-
-<option>08:00 AM</option>
-<option>09:00 AM</option>
-<option>10:00 AM</option>
-<option>11:00 AM</option>
-<option>02:00 PM</option>
-<option>03:00 PM</option>
-<option>04:00 PM</option>
-
-</select>
-
-<br><br>
-
-<button onclick="reservar('Hidratación','fecha2','hora2')">
-
-Reservar
-
-</button>
-
-</div>
-
-<!-- Servicio 3 -->
-
-<div class="card">
-
-<h3>✨ Definición de Rizos</h3>
-
-<p>Peinado profesional para rizos definidos.</p>
-
-<h2>$45.000</h2>
-
-<input type="date" id="fecha3">
-
-<select id="hora3">
-
-<option value="">Hora</option>
-
-<option>08:00 AM</option>
-<option>09:00 AM</option>
-<option>10:00 AM</option>
-<option>11:00 AM</option>
-<option>02:00 PM</option>
-<option>03:00 PM</option>
-<option>04:00 PM</option>
-
-</select>
-
-<br><br>
-
-<button onclick="reservar('Definición de Rizos','fecha3','hora3')">
-
-Reservar
-
-</button>
-
-</div>
-
-<!-- Servicio 4 -->
-
-<div class="card">
-
-<h3>🌿 Nutrición Capilar</h3>
-
-<p>Tratamiento nutritivo para el cabello.</p>
-
-<h2>$60.000</h2>
-
-<input type="date" id="fecha4">
-
-<select id="hora4">
-
-<option value="">Hora</option>
-
-<option>08:00 AM</option>
-<option>09:00 AM</option>
-<option>10:00 AM</option>
-<option>11:00 AM</option>
-<option>02:00 PM</option>
-<option>03:00 PM</option>
-<option>04:00 PM</option>
-
-</select>
-
-<br><br>
-
-<button onclick="reservar('Nutrición Capilar','fecha4','hora4')">
-
-Reservar
-
-</button>
-
-</div>
-
-<!-- Servicio 5 -->
-
-<div class="card">
-
-<h3>🎨 Coloración</h3>
-
-<p>Cambio de color profesional.</p>
-
-<h2>$120.000</h2>
-
-<input type="date" id="fecha5">
-
-<select id="hora5">
-
-<option value="">Hora</option>
-
-<option>08:00 AM</option>
-<option>09:00 AM</option>
-<option>10:00 AM</option>
-<option>11:00 AM</option>
-<option>02:00 PM</option>
-<option>03:00 PM</option>
-<option>04:00 PM</option>
-
-</select>
-
-<br><br>
-
-<button onclick="reservar('Coloración','fecha5','hora5')">
-
-Reservar
-
-</button>
-
-</div>
-
-<!-- Servicio 6 -->
-
-<div class="card">
-
-<h3>👰 Peinado Especial</h3>
-
-<p>Ideal para eventos y ocasiones especiales.</p>
-
-<h2>$90.000</h2>
-
-<input type="date" id="fecha6">
-
-<select id="hora6">
-
-<option value="">Hora</option>
-
-<option>08:00 AM</option>
-<option>09:00 AM</option>
-<option>10:00 AM</option>
-<option>11:00 AM</option>
-<option>02:00 PM</option>
-<option>03:00 PM</option>
-<option>04:00 PM</option>
-
-</select>
-
-<br><br>
-
-<button onclick="reservar('Peinado Especial','fecha6','hora6')">
-
-Reservar
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<script src="../../js/menu.js"></script>
-
-<script src="../../js/clientes.js"></script>
+    <button class="menu-toggle"
+            onclick="toggleMenu()"
+            aria-label="Abrir menú"
+            aria-controls="sidebar">
+        ☰
+    </button>
+
+    <div class="overlay" onclick="cerrarMenu()"></div>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="../../img/logo.png" alt="Glow Curl Logo"
+                 class="sidebar-logo-img"
+                 onerror="this.src='../../img/logo.png'; this.onerror=null;">
+
+            <div class="sidebar-logo-texto">Glow <span>Curl</span></div>
+        </div>
+
+        <ul>
+            <li><a href="inicioCliente.html">Inicio</a></li>
+            <li><a href="serviciosCliente.html" aria-current="page">Servicios</a></li>
+            <li><a href="productosCliente.html">Productos</a></li>
+            <li><a href="citasCliente.html">Mis citas</a></li>
+            <li><a href="perfilCliente.html">Mi perfil</a></li>
+            <li><a href="carritoCliente.html">Carrito</a></li>
+            <li><a href="comprasCliente.html">Mis compras</a></li>
+            <li><a href="historialCliente.html">Historial</a></li>
+            <li><a href="acercaCliente.html">Sobre nosotros</a></li>
+            <li><a href="#" onclick="cerrarSesion(); return false;">Cerrar sesión</a></li>
+        </ul>
+    </nav>
+
+    <main class="contenido">
+
+        <header class="encabezado">
+            <div class="encabezado-titulo-box">
+                <img src="../../img/logo.png" alt="Logo Glow Curl Spa"
+                     class="encabezado-logo"
+                     onerror="this.src='../../img/logo.png'; this.onerror=null;">
+
+                <h1>Nuestros servicios</h1>
+            </div>
+
+            <p>
+                Encuentra el tratamiento ideal para tu cabello y selecciona
+                la fecha y la hora que prefieras. Para confirmar tu reserva,
+                necesitas iniciar sesión.
+            </p>
+        </header>
+
+        <!-- Los servicios se cargarán desde MySQL -->
+        <section class="servicios-grid" id="contenedorServicios">
+            <div class="mensaje-servicios">Cargando servicios...</div>
+        </section>
+
+        <aside class="nota">
+            <strong>Información sobre las reservas:</strong><br>
+            Selecciona una fecha y una hora. Si el horario ya está reservado,
+            el sistema debe indicarte que elijas otro. La disponibilidad
+            mostrada depende de las citas registradas en la aplicación.
+        </aside>
+
+    </main>
+
+    <script src="../../js/menu.js"></script>
+    <script src="../../js/clientes.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            const contenedor = document.getElementById("contenedorServicios");
+
+            const hoy = new Date();
+            const fechaLocal = new Date(
+                hoy.getTime() - hoy.getTimezoneOffset() * 60000
+            ).toISOString().split("T")[0];
+
+            const horarios = [
+                ["08:00", "8:00 a. m."],
+                ["09:00", "9:00 a. m."],
+                ["10:00", "10:00 a. m."],
+                ["11:00", "11:00 a. m."],
+                ["14:00", "2:00 p. m."],
+                ["15:00", "3:00 p. m."],
+                ["16:00", "4:00 p. m."]
+            ];
+
+            function crearCampoFecha(id) {
+                const campo = document.createElement("div");
+                campo.className = "campo";
+
+                const etiqueta = document.createElement("label");
+                etiqueta.htmlFor = id;
+                etiqueta.textContent = "Fecha de la cita";
+
+                const fecha = document.createElement("input");
+                fecha.type = "date";
+                fecha.id = id;
+                fecha.min = fechaLocal;
+                fecha.required = true;
+
+                campo.append(etiqueta, fecha);
+                return campo;
+            }
+
+            function crearCampoHora(id) {
+                const campo = document.createElement("div");
+                campo.className = "campo";
+
+                const etiqueta = document.createElement("label");
+                etiqueta.htmlFor = id;
+                etiqueta.textContent = "Hora";
+
+                const select = document.createElement("select");
+                select.id = id;
+                select.required = true;
+
+                const inicial = document.createElement("option");
+                inicial.value = "";
+                inicial.textContent = "Selecciona una hora";
+                select.appendChild(inicial);
+
+                horarios.forEach(function (horario) {
+                    const opcion = document.createElement("option");
+                    opcion.value = horario[0];
+                    opcion.textContent = horario[1];
+                    select.appendChild(opcion);
+                });
+
+                campo.append(etiqueta, select);
+                return campo;
+            }
+
+            try {
+                const resultado = await solicitar("/servicios");
+                const servicios = resultado.servicios || [];
+
+                contenedor.innerHTML = "";
+
+                if (servicios.length === 0) {
+                    contenedor.innerHTML =
+                        '<div class="mensaje-servicios">No hay servicios disponibles.</div>';
+                    return;
+                }
+
+                servicios.forEach(function (servicio, indice) {
+                    const tarjeta = document.createElement("article");
+                    tarjeta.className = "servicio-card";
+
+                    const encabezado = document.createElement("div");
+                    encabezado.className = "servicio-header";
+
+                    const nombre = document.createElement("h2");
+                    nombre.textContent = servicio.nombre;
+
+                    encabezado.appendChild(nombre);
+
+                    const descripcion = document.createElement("p");
+                    descripcion.textContent =
+                        servicio.descripcion || "Servicio especializado para el cuidado de tu cabello.";
+
+                    const precio = document.createElement("div");
+                    precio.className = "precio";
+                    precio.textContent = Number(servicio.precio).toLocaleString(
+                        "es-CO",
+                        {
+                            style: "currency",
+                            currency: "COP",
+                            maximumFractionDigits: 0
+                        }
+                    );
+
+                    const fechaId = "fechaServicio" + indice;
+                    const horaId = "horaServicio" + indice;
+
+                    const campoFecha = crearCampoFecha(fechaId);
+                    const campoHora = crearCampoHora(horaId);
+
+                    const boton = document.createElement("button");
+                    boton.className = "btn-reservar";
+                    boton.type = "button";
+                    boton.textContent = "Reservar cita";
+
+                    boton.addEventListener("click", function () {
+                        reservar(servicio.nombre, fechaId, horaId);
+                    });
+
+                    tarjeta.append(
+                        encabezado,
+                        descripcion,
+                        precio,
+                        campoFecha,
+                        campoHora,
+                        boton
+                    );
+
+                    contenedor.appendChild(tarjeta);
+                });
+
+            } catch (error) {
+                console.error("Error al cargar servicios:", error);
+                contenedor.innerHTML = "";
+
+                const mensaje = document.createElement("div");
+                mensaje.className = "mensaje-servicios";
+                mensaje.textContent =
+                    "No fue posible cargar los servicios. " + error.message;
+
+                contenedor.appendChild(mensaje);
+            }
+        });
+    </script>
 
 </body>
-
 </html>
