@@ -74,7 +74,7 @@ Repositorio
 
 Repositorio oficial del proyecto en GitHub:
 
-https://github.com/KatherinShaiel2/GlowCurlApp
+https://github.com/Katherin08/GlowCurlApp
 
 Autora
 
