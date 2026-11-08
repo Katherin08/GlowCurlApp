@@ -2,9 +2,9 @@
 /* ==========================================
    GLOW CURL APP - CLIENTES.JS
    Conexión con Node.js y MySQL
-   ========================================== */
+========================================== */
 
-const API = "http://localhost:3000/api";
+const API = "https://glowcurl-backend.onrender.com/api";
 
 // ==========================================
 // SESIÓN
@@ -30,6 +30,10 @@ function formatoPrecio(valor) {
     return "$" + Number(valor || 0).toLocaleString("es-CO");
 }
 
+// ==========================================
+// CONEXIÓN CON EL BACKEND
+// ==========================================
+
 async function solicitar(ruta, opciones = {}) {
     const respuesta = await fetch(API + ruta, {
         ...opciones,
@@ -39,14 +43,24 @@ async function solicitar(ruta, opciones = {}) {
         }
     });
 
-    const resultado = await respuesta.json();
+    let datos;
 
-    if (!respuesta.ok || resultado.ok === false) {
-        throw new Error(resultado.mensaje || "Ocurrió un error.");
+    try {
+        datos = await respuesta.json();
+    } catch {
+        throw new Error("El servidor no devolvió una respuesta válida.");
     }
 
-    return resultado;
+    if (!respuesta.ok) {
+        throw new Error(datos.mensaje || "Error en la solicitud.");
+    }
+
+    return datos;
 }
+
+// ==========================================
+// PROTECCIÓN DE PÁGINAS
+// ==========================================
 
 function exigirUsuario() {
     const usuario = getUsuario();
@@ -183,6 +197,7 @@ async function ingresarCliente() {
 
 function mostrarPasswordCliente() {
     const campo = document.getElementById("passwordCliente");
+
     if (!campo) return;
 
     campo.type = campo.type === "password" ? "text" : "password";
@@ -207,7 +222,7 @@ async function cargarPerfil() {
     try {
         const resultado = await solicitar("/usuarios");
 
-        const datos = resultado.usuarios.find(
+        const datos = (resultado.usuarios || []).find(
             persona => Number(persona.id_usuario) === Number(usuario.id_usuario)
         );
 
@@ -281,7 +296,7 @@ async function actualizarPerfil() {
             }
         );
 
-        const usuarioActualizado = {
+        guardarSesion({
             ...usuario,
             nombre,
             apellido,
@@ -289,9 +304,7 @@ async function actualizarPerfil() {
             telefono,
             cabello,
             tipo_cabello: cabello
-        };
-
-        guardarSesion(usuarioActualizado);
+        });
 
         alert(resultado.mensaje);
 
@@ -350,6 +363,7 @@ async function cargarProductos() {
             imagen.className = "producto-imagen";
             imagen.src = obtenerImagenProducto(producto.nombre);
             imagen.alt = producto.nombre;
+
             imagen.onerror = () => {
                 imagen.src = "../../img/crema.png";
             };
@@ -372,6 +386,7 @@ async function cargarProductos() {
 
             if (stock > 0) {
                 boton.textContent = "Agregar al carrito";
+
                 boton.onclick = () => agregarCarrito(
                     producto.id_producto,
                     producto.nombre,
@@ -405,12 +420,14 @@ async function cargarServicios() {
 
         contenedor.innerHTML = "";
 
-        if (!resultado.servicios.length) {
+        const servicios = resultado.servicios || [];
+
+        if (!servicios.length) {
             contenedor.textContent = "No hay servicios disponibles.";
             return;
         }
 
-        resultado.servicios.forEach(servicio => {
+        servicios.forEach(servicio => {
             const tarjeta = document.createElement("div");
             tarjeta.className = "tarjeta-servicio";
 
@@ -481,7 +498,9 @@ function agregarCarrito(id, producto, precio) {
     }
 
     guardarCarritoActual(carrito);
+
     alert("Producto agregado al carrito.");
+
     mostrarCarrito();
 }
 
@@ -490,6 +509,7 @@ function mostrarCarrito() {
     if (!tabla) return;
 
     const carrito = obtenerCarritoActual();
+
     tabla.innerHTML = "";
 
     let total = 0;
@@ -502,6 +522,7 @@ function mostrarCarrito() {
         const cantidad = Number(producto.cantidad) || 1;
         const precio = Number(producto.precio) || 0;
         const subtotal = cantidad * precio;
+
         total += subtotal;
 
         const fila = document.createElement("tr");
@@ -540,11 +561,15 @@ function mostrarCarrito() {
     });
 
     const totalElemento = document.getElementById("totalCarrito");
-    if (totalElemento) totalElemento.textContent = formatoPrecio(total);
+
+    if (totalElemento) {
+        totalElemento.textContent = formatoPrecio(total);
+    }
 }
 
 function cambiarCantidad(indice, cambio) {
     const carrito = obtenerCarritoActual();
+
     if (!carrito[indice]) return;
 
     carrito[indice].cantidad += cambio;
@@ -567,7 +592,9 @@ function disminuir(indice) {
 
 function eliminarItem(indice) {
     const carrito = obtenerCarritoActual();
+
     carrito.splice(indice, 1);
+
     guardarCarritoActual(carrito);
     mostrarCarrito();
 }
@@ -609,7 +636,9 @@ async function finalizarCompra() {
         guardarCarritoActual([]);
 
         alert(resultado.mensaje);
+
         mostrarCarrito();
+
         await mostrarCompras();
         await cargarInicio();
 
@@ -632,6 +661,7 @@ async function mostrarCompras() {
         );
 
         const compras = resultado.compras || [];
+
         tabla.innerHTML = "";
 
         let total = 0;
@@ -674,6 +704,7 @@ async function mostrarCompras() {
 
     } catch (error) {
         console.error("Error al cargar las compras:", error);
+
         tabla.innerHTML = '<tr><td colspan="5">No se pudieron cargar las compras.</td></tr>';
     }
 }
@@ -758,6 +789,7 @@ async function mostrarCitas() {
         );
 
         const citas = resultado.citas || [];
+
         tabla.innerHTML = "";
 
         const activas = citas.filter(
@@ -797,6 +829,7 @@ async function mostrarCitas() {
 
     } catch (error) {
         console.error(error);
+
         tabla.innerHTML = '<tr><td colspan="5">No se pudieron cargar las citas.</td></tr>';
     }
 }
@@ -810,6 +843,7 @@ async function cancelarCita(id) {
         });
 
         alert(resultado.mensaje);
+
         await mostrarCitas();
         await mostrarHistorial();
         await cargarInicio();
@@ -823,7 +857,6 @@ async function cancelarCita(id) {
 // ==========================================
 // HISTORIAL
 // ==========================================
-
 
 async function mostrarHistorial() {
     const tabla = document.getElementById("listaHistorial");
@@ -856,7 +889,7 @@ async function mostrarHistorial() {
             const datos = [
                 cita.servicio || "Servicio no disponible",
                 String(cita.fecha || "").slice(0, 10),
-                cita.hora || "",
+                String(cita.hora || "").slice(0, 5),
                 cita.estado || "Pendiente"
             ];
 
@@ -879,7 +912,6 @@ async function mostrarHistorial() {
         `;
     }
 }
-
 
 // ==========================================
 // INICIO
@@ -905,8 +937,9 @@ async function cargarInicio() {
         );
 
         const citas = resultado.citas || [];
-        const activas = citas.filter(cita =>
-            cita.estado !== "Cancelada"
+
+        const activas = citas.filter(
+            cita => cita.estado !== "Cancelada"
         );
 
         if (totalServicios) {
@@ -989,3 +1022,4 @@ document.addEventListener("DOMContentLoaded", async () => {
         await cargarServicios();
     }
 });
+
