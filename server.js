@@ -5,6 +5,10 @@ const express = require('express');
 const cors = require('cors');
 const pool = require('./backend/db');
 
+const {
+    hashPassword,
+    verifyPassword
+} = require('./backend/passwords');
 const app = express();
 
 app.use(cors());
@@ -156,6 +160,7 @@ app.get('/api/usuarios', async (req, res) => {
     }
 });
 
+
 app.post('/api/usuarios', async (req, res) => {
     const {
         nombre,
@@ -197,6 +202,9 @@ app.post('/api/usuarios', async (req, res) => {
             });
         }
 
+        // Proteger la contraseña antes de guardarla
+        const passwordHash = await hashPassword(password);
+
         const [resultado] = await pool.query(`
             INSERT INTO usuarios
             (nombre, apellido, correo, telefono, cabello, password, rol)
@@ -207,7 +215,7 @@ app.post('/api/usuarios', async (req, res) => {
             correo,
             telefono,
             tipoCabello,
-            password,
+            passwordHash,
             rol
         ]);
 
@@ -221,6 +229,7 @@ app.post('/api/usuarios', async (req, res) => {
         errorServidor(res, 'Error al guardar el usuario', error);
     }
 });
+
 
 app.put('/api/usuarios/:id', async (req, res) => {
     const { id } = req.params;
@@ -245,10 +254,21 @@ app.put('/api/usuarios/:id', async (req, res) => {
         });
     }
 
+    if (!['ondulado', 'rizo', 'afro'].includes(tipoCabello)) {
+        return res.status(400).json({
+            ok: false,
+            mensaje: 'El tipo de cabello no es válido'
+        });
+    }
+
     try {
         let resultado;
 
-        if (password) {
+        if (password && password.trim() !== '') {
+
+            // Generar un hash para la nueva contraseña
+            const passwordHash = await hashPassword(password);
+
             [resultado] = await pool.query(`
                 UPDATE usuarios
                 SET nombre = ?,
@@ -260,10 +280,19 @@ app.put('/api/usuarios/:id', async (req, res) => {
                     rol = ?
                 WHERE id = ?
             `, [
-                nombre, apellido, correo, telefono,
-                tipoCabello, password, rol, id
+                nombre,
+                apellido,
+                correo,
+                telefono,
+                tipoCabello,
+                passwordHash,
+                rol,
+                id
             ]);
+
         } else {
+
+            // Actualizar los datos sin modificar la contraseña
             [resultado] = await pool.query(`
                 UPDATE usuarios
                 SET nombre = ?,
@@ -274,8 +303,13 @@ app.put('/api/usuarios/:id', async (req, res) => {
                     rol = ?
                 WHERE id = ?
             `, [
-                nombre, apellido, correo, telefono,
-                tipoCabello, rol, id
+                nombre,
+                apellido,
+                correo,
+                telefono,
+                tipoCabello,
+                rol,
+                id
             ]);
         }
 
@@ -295,6 +329,7 @@ app.put('/api/usuarios/:id', async (req, res) => {
         errorServidor(res, 'Error al actualizar el usuario', error);
     }
 });
+
 
 app.delete('/api/usuarios/:id', async (req, res) => {
     const { id } = req.params;
